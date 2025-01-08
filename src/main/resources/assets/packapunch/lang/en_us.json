@@ -8,5 +8,22 @@
     "effects.packapunch.speed_cola": "Speed Cola",
     "effects.packapunch.melee_macchiato": "Melee Macchiato",
     "message.packapunch.retrofit_machine.upgraded": "Your Weapon Now Reach Level %s !!",
-    "gui.papckapunch.retrofit_machine.upgrade": "Upgrade"
+    "gui.papckapunch.retrofit_machine.upgrade": "Upgrade",
+    "gui.packapunch.cloth_config_warning.tips": "",
+    "gui.packapunch.cloth_config_warning.download": "",
+    "config.packapunch.pap": "Pack-a-Punched",
+    "config.packapunch.pap.pap_item_1": "Upgrade Material of PaP Tier I",
+    "config.packapunch.pap.pap_item_2": "Upgrade Material of PaP Tier II",
+    "config.packapunch.pap.pap_item_3": "Upgrade Material of PaP Tier III",
+    "config.packapunch.pap.pap_cost_1": "Upgrade Cost of PaP Tier I",
+    "config.packapunch.pap.pap_cost_2": "Upgrade Cost of PaP Tier II",
+    "config.packapunch.pap.pap_cost_3": "Upgrade Cost of PaP Tier III",
+    "config.packapunch.pap.rarity_item_c": "Upgrade Material of Rarity Tier C",
+    "config.packapunch.pap.rarity_item_b": "Upgrade Material of Rarity Tier B",
+    "config.packapunch.pap.rarity_item_a": "Upgrade Material of Rarity Tier A",
+    "config.packapunch.pap.rarity_item_s": "Upgrade Material of Rarity Tier S",
+    "config.packapunch.pap.rarity_cost_c": "Upgrade Cost of Rarity Tier C",
+    "config.packapunch.pap.rarity_cost_b": "Upgrade Cost of Rarity Tier B",
+    "config.packapunch.pap.rarity_cost_a": "Upgrade Cost of Rarity Tier A",
+    "config.packapunch.pap.rarity_cost_s": "Upgrade Cost of Rarity Tier S"
 }
