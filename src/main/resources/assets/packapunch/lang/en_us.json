@@ -1,0 +1,12 @@
+{
+    "block.packapunch.retrofit_machine": "Pack-a-Punch Machine",
+    "block.packapunch.arsenal_machine": "Arsenal Machine",
+    "item.packapunch.artificial_115": "Artificial Element 115",
+    "item.packapunch.element_115": "Refined Element 115",
+    "effects.packapunch.death_shooter": "Death Shooter",
+    "effects.packapunch.phd_faller": "PhD Faller",
+    "effects.packapunch.speed_cola": "Speed Cola",
+    "effects.packapunch.melee_macchiato": "Melee Macchiato",
+    "message.packapunch.retrofit_machine.upgraded": "Your Weapon Now Reach Level %s !!",
+    "gui.papckapunch.retrofit_machine.upgrade": "Upgrade"
+}

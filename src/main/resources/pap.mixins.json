@@ -1,0 +1,17 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "mod.tropidragon.packapunch.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "pap.refmap.json",
+    "mixins": [
+        "tacz.MixinAttachmentDataUtils",
+        "tacz.MixinEntityKineticBullet",
+        "tacz.MixinModernKineticGunItem",
+        "tacz.MixinClientGunTooltip"
+    ],
+    "client": [],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
