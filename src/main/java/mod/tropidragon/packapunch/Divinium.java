@@ -2,6 +2,7 @@ package mod.tropidragon.packapunch;
 
 import com.mojang.logging.LogUtils;
 
+import mod.tropidragon.packapunch.config.CommonConfig;
 import mod.tropidragon.packapunch.init.ModBlocks;
 import mod.tropidragon.packapunch.init.ModContainer;
 import mod.tropidragon.packapunch.init.ModEffects;
@@ -15,6 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -50,6 +52,8 @@ public class Divinium {
         ModItems.ITEMS.register(bus);
         ModContainer.CONTAINERS.register(bus);
         ModEffects.register(bus);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.init());
     }
 
     private void setup(final FMLCommonSetupEvent event) {

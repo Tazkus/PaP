@@ -107,7 +107,7 @@ public class Pap {
     public static ItemStack getPapUpgradeMaterial(int papLevel) {
         switch (papLevel) {
             case 0:
-                return getConfigItem(PapConfig.PAP_ITEM_1.get(), Items.DIAMOND)[0];
+                return getConfigItem(PapConfig.PAP_ITEM_I.get(), Items.DIAMOND)[0];
             case 1:
                 return getConfigItem(PapConfig.PAP_ITEM_2.get(), Items.DIAMOND)[0];
             case 2:

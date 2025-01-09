@@ -54,13 +54,13 @@ public class MenuIntegration {
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.pap_item_1"),
                         DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.PAP_ITEM_1.get()))),
+                                .getValue(new ResourceLocation(PapConfig.PAP_ITEM_I.get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.PAP_ITEM_1.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.PAP_ITEM_I.set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.pap_item_2"),

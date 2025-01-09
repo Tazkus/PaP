@@ -3,7 +3,7 @@ package mod.tropidragon.packapunch.config.subconfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class PapConfig {
-    public static ForgeConfigSpec.ConfigValue<String> PAP_ITEM_1;
+    public static ForgeConfigSpec.ConfigValue<String> PAP_ITEM_I;
     public static ForgeConfigSpec.ConfigValue<String> PAP_ITEM_2;
     public static ForgeConfigSpec.ConfigValue<String> PAP_ITEM_3;
     public static ForgeConfigSpec.IntValue PAP_COST_1;
@@ -23,7 +23,7 @@ public final class PapConfig {
         builder.push("pap");
 
         builder.comment("The item used in PaP upgrade level I");
-        PAP_ITEM_1 = builder.define("PapItem1", "minecraft:netherite_scrap");
+        PAP_ITEM_I = builder.define("PapItemI", "minecraft:netherite_scrap");
         builder.comment("The item used in PaP upgrade level II");
         PAP_ITEM_2 = builder.define("PapItem2", "minecraft:netherite_scrap");
         builder.comment("The item used in PaP upgrade level III");

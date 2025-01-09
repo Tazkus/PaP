@@ -137,7 +137,7 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
 
     private void renderIngredient(PoseStack poseStack, int weaponLevel) {
         int offsetX = leftPos + 80;
-        int offsetY = topPos + 60;
+        int offsetY = topPos + 60 + 1;
 
         ItemStack item = Pap.getPapUpgradeMaterial(weaponLevel);
         int count = Pap.getPapUpgradeMaterialCount(weaponLevel);
