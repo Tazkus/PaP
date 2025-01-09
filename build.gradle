@@ -1,8 +1,8 @@
-import java.text.SimpleDateFormat
+// import java.text.SimpleDateFormat
 
 // 设置日期格式，用于填充快照版版本号
-SimpleDateFormat FORMAT = new SimpleDateFormat("MMdd-HHmmss")
-FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"))
+// SimpleDateFormat FORMAT = new SimpleDateFormat("MMdd-HHmmss")
+// FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"))
 
 buildscript {
     repositories {
@@ -25,14 +25,14 @@ buildscript {
 //     id 'maven-publish'
 // }
 // apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-version = '0.0.1'
+version = '0.0.2'
 group = 'mod.tropidragon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'packapunch-1.18.2'
 
