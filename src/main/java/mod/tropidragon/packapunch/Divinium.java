@@ -47,11 +47,11 @@ public class Divinium {
         // ModLoadingContext.get().registerConfig(, null);
 
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModEffects.MOB_EFFECTS.register(bus);
         ModBlocks.BLOCKS.register(bus);
         ModBlocks.BLOCK_ENTITIES.register(bus);
         ModItems.ITEMS.register(bus);
         ModContainer.CONTAINERS.register(bus);
-        ModEffects.register(bus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.init());
     }

@@ -1,9 +1,9 @@
 package mod.tropidragon.packapunch.init;
 
-import java.rmi.registry.Registry;
-
+import java.awt.Color;
 import mod.tropidragon.packapunch.Divinium;
-import mod.tropidragon.packapunch.effect.DeathShooter;
+import mod.tropidragon.packapunch.effect.DeadshotEffect;
+import mod.tropidragon.packapunch.effect.PhdEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -15,8 +15,10 @@ public class ModEffects {
     public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS,
             Divinium.MODID);
 
-    public static final RegistryObject<MobEffect> DEATH_SHOOTER = MOB_EFFECTS.register("death_shooter",
-            () -> new DeathShooter(MobEffectCategory.BENEFICIAL, 0));
+    public static final RegistryObject<MobEffect> DEADSHOT = MOB_EFFECTS.register("deadshot",
+            () -> new DeadshotEffect(MobEffectCategory.BENEFICIAL, Color.ORANGE.getRGB()));
+    public static final RegistryObject<MobEffect> PHD = MOB_EFFECTS.register("phd",
+            () -> new PhdEffect(MobEffectCategory.BENEFICIAL, new Color(255, 0, 255).getRGB()));
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

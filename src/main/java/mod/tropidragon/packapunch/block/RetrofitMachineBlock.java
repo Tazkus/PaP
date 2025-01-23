@@ -2,8 +2,6 @@ package mod.tropidragon.packapunch.block;
 
 import javax.annotation.Nullable;
 
-import com.tacz.guns.block.GunSmithTableBlock;
-
 import mod.tropidragon.packapunch.block.entity.RetrofitMachineBlockEntity;
 import mod.tropidragon.packapunch.inventory.RetrofitMachineMenu;
 import net.minecraft.core.BlockPos;
@@ -117,29 +115,15 @@ public class RetrofitMachineBlock extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
+        // builder.add(FACING, PART);
         builder.add(FACING);
         builder.add(BlockStateProperties.POWERED);
-        // builder.add(FACING, PART);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
         return new RetrofitMachineBlockEntity(pos, blockState);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
-            BlockEntityType<T> type) {
-        if (level.isClientSide()) {
-            return null;
-        }
-        return (lvl, pos, blockState, t) -> {
-            if (t instanceof RetrofitMachineBlockEntity tile) {
-                tile.tickServer();
-            }
-        };
     }
 
     @Nullable
@@ -217,7 +201,7 @@ public class RetrofitMachineBlock extends BaseEntityBlock {
 
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.DESTROY;
+        return PushReaction.IGNORE;
     }
 
     @Override
@@ -239,5 +223,19 @@ public class RetrofitMachineBlock extends BaseEntityBlock {
             }
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+            BlockEntityType<T> type) {
+        if (level.isClientSide()) {
+            return null;
+        }
+        return (lvl, pos, blockState, t) -> {
+            if (t instanceof RetrofitMachineBlockEntity tile) {
+                tile.tickServer();
+            }
+        };
     }
 }

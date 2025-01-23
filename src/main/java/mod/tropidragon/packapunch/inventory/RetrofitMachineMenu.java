@@ -16,7 +16,6 @@ import mod.tropidragon.packapunch.network.message.ServerMessageUpgrade;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -39,21 +38,15 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
 public class RetrofitMachineMenu extends AbstractContainerMenu {
-    // private BlockEntity blockEntity;
-    private Player playerEntity;
-    private IItemHandler playerInventory;
-
-    private final BlockEntity blockEntity;
-    // private final RetrofitMachineBlockEntity blockEntity;
-    private final Level level;
-    // private final ContainerData data;
-
     public static final MenuType<RetrofitMachineMenu> TYPE = IForgeMenuType
-            .create((windowId, inv, data) -> new RetrofitMachineMenu(windowId,
-                    inv, inv.player, data.readBlockPos()));
-
+            .create((windowId, inv, data) -> new RetrofitMachineMenu(windowId, inv, inv.player, data.readBlockPos()));
     // .create((windowId, inv, data) -> new
     // RetrofitMachineMenu(windowId, data.readBlockPos(), inv, inv.player));
+
+    private Player playerEntity;
+    private IItemHandler playerInventory;
+    private final Level level;
+    private final BlockEntity blockEntity;
 
     public RetrofitMachineMenu(int id, Inventory inventory, Player player, BlockPos pos) {
         super(TYPE, id);
@@ -66,12 +59,26 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
         this.level = inventory.player.level;
         this.playerEntity = player;
 
-        addPlayerInventory(inventory);
-        addPlayerHotbar(inventory);
-
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 38));
         });
+
+        addPlayerInventory(inventory);
+        addPlayerHotbar(inventory);
+    }
+
+    private void addPlayerInventory(Inventory playerInventory) {
+        for (int i = 0; i < 3; ++i) {
+            for (int l = 0; l < 9; ++l) {
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+            }
+        }
+    }
+
+    private void addPlayerHotbar(Inventory playerInventory) {
+        for (int i = 0; i < 9; ++i) {
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
+        }
     }
 
     public int getEnergy() {
@@ -131,26 +138,13 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
         return itemStack;
     }
 
-    private void addPlayerInventory(Inventory playerInventory) {
-        for (int i = 0; i < 3; ++i) {
-            for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
-            }
-        }
-    }
-
-    private void addPlayerHotbar(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
-        }
-    }
-
+    // 武器升级
     public boolean hasUpgradableWeapon() {
         RetrofitMachineBlockEntity be = ((RetrofitMachineBlockEntity) blockEntity);
         if (RetrofitMachineBlockEntity.hasGunInWeaponSlot(be)) {
             int papLvl = RetrofitMachineBlockEntity.getWeaponPapLevel(be);
-            int rarityLvl = RetrofitMachineBlockEntity.getWeaponRarityLevel(be);
-            return Pap.upgradable(papLvl, rarityLvl);
+            // int rarityLvl = RetrofitMachineBlockEntity.getWeaponRarityLevel(be);
+            return Pap.upgradable(papLvl, 0);
         }
         return false;
     }
@@ -171,40 +165,18 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
             return;
         }
         if (be != null && RetrofitMachineBlockEntity.hasGunInWeaponSlot(be)) {
-            player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> {
-                // 升级条件
-                int lvl = this.getWeaponPapLevel();
-                if (!Pap.upgradable(lvl, 0)) {
-                    return;
-                }
-                Item item = Pap.getPapUpgradeMaterial(lvl).getItem();
-                int needCount = Pap.getPapUpgradeMaterialCount(lvl);
+            // 升级条件
+            int lvl = this.getWeaponPapLevel();
+            if (!Pap.upgradable(lvl, 0)) {
+                return;
+            }
+            Item item = Pap.getPapUpgradeItem(lvl).getItem();
+            int needCount = Pap.getPapUpgradeCost(lvl);
 
-                // 检查材料数量
-                int hasCount = 0;
-                Int2IntArrayMap recordCount = new Int2IntArrayMap();
-                for (int slotIndex = 0; slotIndex < handler.getSlots(); slotIndex++) {
-                    ItemStack stack = handler.getStackInSlot(slotIndex);
-                    int stackCount = stack.getCount();
-                    if (!stack.isEmpty() && stack.getItem() == item) {
-                        hasCount = hasCount + stackCount;
-                        // 记录该 slot 的材料数量
-                        if (hasCount <= needCount) {
-                            // 如果数量不足，全扣
-                            recordCount.put(slotIndex, stackCount);
-                        } else {
-                            // 数量够了，只扣需要的数量
-                            int remaining = hasCount - needCount;
-                            recordCount.put(slotIndex, stackCount - remaining);
-                            break;
-                        }
-                    }
-                }
-                if (hasCount >= needCount) {
-                    // 扣除材料
-                    for (int slotIndex : recordCount.keySet()) {
-                        handler.extractItem(slotIndex, recordCount.get(slotIndex), false);
-                    }
+            // 检查材料数量
+            player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> {
+
+                if (PlayerInventoryUtil.consumePlayerItem(handler, item, needCount)) {
                     // 升级武器
                     RetrofitMachineBlockEntity.upgradeWeapon(be);
                     // 更新，否则客户端显示不正确
@@ -215,37 +187,4 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
 
         }
     }
-
-    private int getPlayerIngredientCount(IItemHandler handler, int needCount) {
-        if (playerEntity == null) {
-            return -1;
-        }
-        int lvl = this.getWeaponPapLevel();
-        Item item = Pap.getPapUpgradeMaterial(lvl).getItem();
-        Inventory inventory = playerEntity.getInventory();
-        int count = 0;
-
-        for (ItemStack stack : inventory.items) {
-            if (!stack.isEmpty() && stack.getItem() == item) {
-                count = count + stack.getCount();
-            }
-        }
-
-        return count;
-    }
-    // private int getPlayerIngredientCount() {
-    // if (playerEntity == null) {
-    // return -1;
-    // }
-    // int lvl = this.getWeaponPapLevel();
-    // Item item = Pap.getPapUpgradeMaterial(lvl).getItem();
-    // Inventory inventory = playerEntity.getInventory();
-    // int count = 0;
-    // for (ItemStack stack : inventory.items) {
-    // if (!stack.isEmpty() && stack.getItem() == item) {
-    // count = count + stack.getCount();
-    // }
-    // }
-    // return count;
-    // }
 }

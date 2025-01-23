@@ -43,6 +43,15 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
 
     public RetrofitMachineScreen(RetrofitMachineMenu menu, Inventory inv, Component name) {
         super(menu, inv, name);
+        this.imageWidth = 176;
+        this.imageHeight = 168;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        this.clearWidgets();
+        this.addCraftButton();
     }
 
     @Override
@@ -52,7 +61,6 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
         this.renderTooltip(matrixStack, mouseX, mouseY);
 
         // 绘制强化方案
-
         int level = this.menu.getWeaponPapLevel();
         if (Pap.upgradable(level, 0)) {
             // blit(pPoseStack, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
@@ -83,64 +91,27 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
         int y = (this.height - this.imageHeight) / 2;
 
         this.blit(matrixStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
-
+        // PAP招牌
+        this.blit(matrixStack, x, y - 33 - 2, 0, 169, this.imageWidth, 33);
         // 绘制进度条
         // this.blit(matrixStack, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
     }
 
-    @Override
-    protected void init() {
-        super.init();
-        this.clearWidgets();
-        this.addCraftButton();
-    }
-
     private void addCraftButton() {
-        // this.addRenderableWidget(
-        // new Button(leftPos + 128, topPos + 48, 48, 20,
-        // new TextComponent("Upgrade"),
-        // b -> {
-        // // 客户端检查材料是否足够，避免无效发包
-        // // if (playerIngredientCount != null)
-        // NetworkHandler.CHANNEL.sendToServer(new
-        // ClientMessageUpgrade(this.menu.containerId));
-        // })
-        // );
         this.addRenderableWidget(
                 new ImageButton(leftPos + 88 - 24, topPos + 60, 48, 18, 138, 164, 18, TEXTURE,
                         // new TextComponent("Upgrade"),
                         b -> {
                             NetworkHandler.CHANNEL.sendToServer(new ClientMessageUpgrade(this.menu.containerId));
                         }));
-
-        // this.addRenderableWidget(new ImageButton(leftPos + 289, topPos + 162, 29, 18,
-        // 138, 164, 18, GUI, b -> {
-
-        // if (playerIngredientCount != null) {
-        // this.menu.doUpgrade();
-
-        // // 检查是否能合成，不能就不发包
-        // // NetworkHandler.CHANNEL
-        // // .sendToServer(new ClientMessageCraft(this.selectedRecipe.getId(),
-        // // this.menu.containerId));
-
-        // }
-        // }));
-
-    }
-
-    public static void drawModCenteredString(PoseStack poseStack, Font font, Component component, int pX, int pY,
-            int color) {
-        FormattedCharSequence text = component.getVisualOrderText();
-        font.draw(poseStack, text, (float) (pX - font.width(text) / 2), (float) pY, color);
     }
 
     private void renderIngredient(PoseStack poseStack, int weaponLevel) {
         int offsetX = leftPos + 80;
         int offsetY = topPos + 60 + 1;
 
-        ItemStack item = Pap.getPapUpgradeMaterial(weaponLevel);
-        int count = Pap.getPapUpgradeMaterialCount(weaponLevel);
+        ItemStack item = Pap.getPapUpgradeItem(weaponLevel);
+        int count = Pap.getPapUpgradeCost(weaponLevel);
 
         this.itemRenderer.renderAndDecorateFakeItem(item, offsetX, offsetY);
 

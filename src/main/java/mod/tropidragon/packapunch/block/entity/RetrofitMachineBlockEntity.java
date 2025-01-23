@@ -35,7 +35,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -160,7 +160,7 @@ public class RetrofitMachineBlockEntity extends BlockEntity {
         if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
             return handler.cast();
         }
-        // if(cap == CapabilityEnergy.ENERGY){
+        // if (cap == CapabilityEnergy.ENERGY) {
         // return energy.cast();
         // }
         return super.getCapability(cap, side);
@@ -185,14 +185,8 @@ public class RetrofitMachineBlockEntity extends BlockEntity {
         return ((IMixinModernKineticGunItem) (Object) iGun).getPaPLevel(gun);
     }
 
-    public static int getWeaponRarityLevel(RetrofitMachineBlockEntity entity) {
-        ItemStack gun = entity.itemHandler.getStackInSlot(0);
-        IGun iGun = IGun.getIGunOrNull(gun);
-        return ((IMixinModernKineticGunItem) (Object) iGun).getRarityLevel(gun);
-    }
-
     public static void upgradeWeapon(RetrofitMachineBlockEntity entity) {
-        Level level = entity.level;
+        // Level level = entity.level;
         // SimpleContainer inventory = new
         // SimpleContainer(entity.itemHandler.getSlots());
 

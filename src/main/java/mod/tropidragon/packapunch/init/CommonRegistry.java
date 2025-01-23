@@ -1,5 +1,6 @@
 package mod.tropidragon.packapunch.init;
 
+import mod.tropidragon.packapunch.compat.vault.VaultCompat;
 import mod.tropidragon.packapunch.network.NetworkHandler;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,6 +14,7 @@ public class CommonRegistry {
     @SubscribeEvent
     public static void onSetupEvent(FMLCommonSetupEvent event) {
         event.enqueueWork(NetworkHandler::init);
+        event.enqueueWork(VaultCompat::init);
         // event.enqueueWork(ModSyncEntityData::init);
     }
 

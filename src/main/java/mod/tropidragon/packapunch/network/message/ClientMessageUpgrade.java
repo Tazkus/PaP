@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.tacz.guns.inventory.GunSmithTableMenu;
 
+import mod.tropidragon.packapunch.inventory.ArsenalMachineMenu;
 import mod.tropidragon.packapunch.inventory.RetrofitMachineMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,9 +34,13 @@ public class ClientMessageUpgrade {
                 if (entity == null) {
                     return;
                 }
-                if (entity.containerMenu.containerId == message.menuId
-                        && entity.containerMenu instanceof RetrofitMachineMenu menu) {
-                    menu.doUpgrade(entity);
+                if (entity.containerMenu.containerId == message.menuId) {
+                    if (entity.containerMenu instanceof RetrofitMachineMenu menu) {
+                        menu.doUpgrade(entity);
+                    }
+                    if (entity.containerMenu instanceof ArsenalMachineMenu menu) {
+                        menu.doUpgrade(entity);
+                    }
                 }
             });
         }

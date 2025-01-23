@@ -38,7 +38,8 @@ public class MenuIntegration {
     public static void registerModsPage() {
         ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class,
                 () -> new ConfigGuiHandler.ConfigGuiFactory(
-                        (client, parent) -> getConfigBuilder().setParentScreen(parent).build()));
+                        (client, parent) -> getConfigBuilder().setParentScreen(parent)
+                                .build()));
     }
 
     private static String getItemId(Item item) {
@@ -53,83 +54,109 @@ public class MenuIntegration {
 
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.pap_item_1"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.PAP_ITEM_I.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(
+                                                PapConfig.PAP_ITEM_1
+                                                        .get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.PAP_ITEM_I.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.PAP_ITEM_1
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.pap_item_2"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.PAP_ITEM_2.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(PapConfig.PAP_ITEM_2.get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.PAP_ITEM_2.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.PAP_ITEM_2
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.pap_item_3"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.PAP_ITEM_3.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(
+                                                PapConfig.PAP_ITEM_3
+                                                        .get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.PAP_ITEM_3.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.PAP_ITEM_3
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
 
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.rarity_item_c"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.RARITY_ITEM_C.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(
+                                                PapConfig.RARITY_ITEM_C
+                                                        .get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_C.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_C
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
 
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.rarity_item_b"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.RARITY_ITEM_B.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(
+                                                PapConfig.RARITY_ITEM_B
+                                                        .get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_B.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_B
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
 
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.rarity_item_a"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.RARITY_ITEM_A.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(
+                                                PapConfig.RARITY_ITEM_A
+                                                        .get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_A.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_A
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
         pap.addEntry(entryBuilder
                 .startDropdownMenu(new TranslatableComponent("config.packapunch.pap.rarity_item_s"),
-                        DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(ForgeRegistries.ITEMS
-                                .getValue(new ResourceLocation(PapConfig.RARITY_ITEM_S.get()))),
+                        DropdownMenuBuilder.TopCellElementBuilder
+                                .ofItemObject(ForgeRegistries.ITEMS
+                                        .getValue(new ResourceLocation(
+                                                PapConfig.RARITY_ITEM_S
+                                                        .get()))),
                         DropdownMenuBuilder.CellCreatorBuilder.ofItemObject())
                 .setSelections(Registry.ITEM.stream().sorted(Comparator.comparing(Item::toString))
                         .collect(Collectors.toCollection(LinkedHashSet::new)))
                 .setDefaultValue(Items.NETHERITE_SCRAP)
                 .setTooltip(new TextComponent(""))
-                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_S.set(ForgeRegistries.ITEMS.getKey(s).toString()))
+                .setSaveConsumer(s -> PapConfig.RARITY_ITEM_S
+                        .set(ForgeRegistries.ITEMS.getKey(s).toString()))
                 .build());
 
         // COUNT

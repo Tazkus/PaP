@@ -1,6 +1,7 @@
 package mod.tropidragon.packapunch.common;
 
 import mod.tropidragon.packapunch.common.internal.IMixinModernKineticGunItem;
+import mod.tropidragon.packapunch.compat.vault.VaultCompat;
 import mod.tropidragon.packapunch.config.subconfig.PapConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -14,10 +15,15 @@ import java.util.List;
 
 import com.tacz.guns.api.item.IGun;
 
+import iskallia.vault.core.vault.Vault;
+
 public class Pap {
     // C, UC, R, E, L
+    // static private float[] rarityModifiers = { 1.00f, 1.25f, 1.50f, 1.75f, 2.00f
+    // };
     static private float[] rarityModifiers = { 1.0f, 1.5f, 2.0f, 3.0f, 4.0f };
     // 无改造, 超改I, 超改II, 超改III
+    // static private float[] papModifiers = { 1.0f, 2.0f, 3.0f, 4.0f };
     static private float[] papModifiers = { 1.0f, 2.0f, 4.0f, 8.0f };
 
     public static boolean upgradable(int papLvl, int rarityLvl) {
@@ -61,19 +67,6 @@ public class Pap {
         }
     }
 
-    public static float getDamageModifier(ItemStack gun, IGun iGun) {
-
-        float gunRarityModifier = 1.0f;
-        float gunPaPModifier = 1.0f;
-
-        int gunRarityTier = ((IMixinModernKineticGunItem) (Object) iGun).getRarityLevel(gun);
-        int gunPaPTier = ((IMixinModernKineticGunItem) (Object) iGun).getPaPLevel(gun);
-        gunRarityModifier = rarityModifiers[gunRarityTier];
-        gunPaPModifier = papModifiers[gunPaPTier];
-
-        return gunRarityModifier * gunPaPModifier;
-    }
-
     public static float getDamageModifier(ItemStack gun) {
 
         float gunRarityModifier = 1.0f;
@@ -87,11 +80,12 @@ public class Pap {
             gunRarityModifier = rarityModifiers[gunRarityTier];
             gunPaPModifier = papModifiers[gunPaPTier];
         }
-
-        return gunRarityModifier * gunPaPModifier;
+        // nerf it to additive 😂
+        return gunRarityModifier + gunPaPModifier - 1f;
+        // return gunRarityModifier * gunPaPModifier;
     }
 
-    public static int getPapUpgradeMaterialCount(int papLevel) {
+    public static int getPapUpgradeCost(int papLevel) {
         switch (papLevel) {
             case 0:
                 return PapConfig.PAP_COST_1.get();
@@ -104,16 +98,54 @@ public class Pap {
         }
     }
 
-    public static ItemStack getPapUpgradeMaterial(int papLevel) {
+    public static int getRarityUpgradeCost(int rarityLevel) {
+        switch (rarityLevel) {
+            case 0:
+                return PapConfig.RARITY_COST_C.get();
+            case 1:
+                return PapConfig.RARITY_COST_B.get();
+            case 2:
+                return PapConfig.RARITY_COST_A.get();
+            case 3:
+                return PapConfig.RARITY_COST_S.get();
+            default:
+                return 0;
+        }
+    }
+
+    public static ItemStack getPapUpgradeItem(int papLevel) {
+        if (VaultCompat.INSTALLED) {
+            return VaultCompat.getPapUpgradeItem(papLevel);
+        }
         switch (papLevel) {
             case 0:
-                return getConfigItem(PapConfig.PAP_ITEM_I.get(), Items.DIAMOND)[0];
+                return getConfigItem(PapConfig.PAP_ITEM_1.get(), Items.DIAMOND)[0];
             case 1:
                 return getConfigItem(PapConfig.PAP_ITEM_2.get(), Items.DIAMOND)[0];
             case 2:
                 return getConfigItem(PapConfig.PAP_ITEM_3.get(), Items.DIAMOND)[0];
             default:
                 Ingredient ingredient = Ingredient.of(Items.DIAMOND, Items.GOLDEN_APPLE);
+                ItemStack[] items = ingredient.getItems();
+                return items[0];
+        }
+    }
+
+    public static ItemStack getRarityUpgradeItem(int rarityLvl) {
+        if (VaultCompat.INSTALLED) {
+            return VaultCompat.getRarityUpgradeItem(rarityLvl);
+        }
+        switch (rarityLvl) {
+            case 0:
+                return getConfigItem(PapConfig.RARITY_ITEM_C.get(), Items.NETHERITE_SCRAP)[0];
+            case 1:
+                return getConfigItem(PapConfig.RARITY_ITEM_B.get(), Items.NETHERITE_SCRAP)[0];
+            case 2:
+                return getConfigItem(PapConfig.RARITY_ITEM_A.get(), Items.NETHERITE_SCRAP)[0];
+            case 3:
+                return getConfigItem(PapConfig.RARITY_ITEM_S.get(), Items.NETHERITE_SCRAP)[0];
+            default:
+                Ingredient ingredient = Ingredient.of(Items.NETHERITE_SCRAP, Items.GOLDEN_APPLE);
                 ItemStack[] items = ingredient.getItems();
                 return items[0];
         }

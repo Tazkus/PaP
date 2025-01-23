@@ -26,8 +26,8 @@ public class ModRecipes extends RecipeProvider {
                 .pattern("###")
                 .pattern("#X#")
                 .pattern("###")
-                .define('#', Items.DIAMOND_BLOCK)
-                .define('X', Items.GHAST_TEAR) // ghast tear
+                .define('X', Items.DIAMOND_BLOCK)
+                .define('#', Items.GHAST_TEAR) // ghast tear
                 .group("packapunch")
                 .unlockedBy("has_ore", has(Tags.Items.ORES_DIAMOND))
                 .save(consumer);
@@ -44,11 +44,25 @@ public class ModRecipes extends RecipeProvider {
 
         ShapedRecipeBuilder
                 .shaped(ModBlocks.RETROFIT_MACHINE.get())
-                .pattern("DDD")
-                .pattern("DXD")
-                .pattern("DDD")
-                .define('D', Items.NETHERITE_BLOCK)
+                .pattern("III")
+                .pattern("IXI")
+                .pattern("NNN")
                 .define('X', ModItems.ELEMENT_115.get())
+                .define('I', Items.IRON_INGOT)
+                .define('N', Items.NETHERITE_INGOT)
+                .group("packapunch")
+                .unlockedBy("has_ore", has(Tags.Items.ORES_DIAMOND))
+                .save(consumer);
+
+        ShapedRecipeBuilder
+                .shaped(ModBlocks.ARSENAL_MACHINE.get())
+                .pattern("III")
+                .pattern("IAI")
+                .pattern("IRI")
+                // .define('X', ModItems.ELEMENT_115.get())
+                .define('I', Items.IRON_INGOT)
+                .define('R', Items.REDSTONE_BLOCK)
+                .define('A', com.tacz.guns.init.ModItems.AMMO_BOX.get())
                 .group("packapunch")
                 .unlockedBy("has_ore", has(Tags.Items.ORES_DIAMOND))
                 .save(consumer);
