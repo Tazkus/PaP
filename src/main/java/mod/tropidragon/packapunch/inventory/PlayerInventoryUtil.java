@@ -30,7 +30,7 @@ public class PlayerInventoryUtil {
     }
 
     public static boolean consumePlayerItem(IItemHandler handler, Item item, int needCount) {
-        if (item == ModItems.SOUL_SHARD) {
+        if (VaultCompat.INSTALLED && item == ModItems.SOUL_SHARD) {
             return VaultCompat.consumePlayerSoulShard(handler, needCount);
         }
 

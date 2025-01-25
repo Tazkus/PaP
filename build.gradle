@@ -32,7 +32,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-version = '0.0.4'
+version = '0.0.5'
 group = 'mod.tropidragon' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'packapunch-1.18.2'
 

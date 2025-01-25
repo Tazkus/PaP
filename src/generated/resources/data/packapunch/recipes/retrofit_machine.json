@@ -2,16 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "group": "packapunch",
   "pattern": [
-    "DDD",
-    "DXD",
-    "DDD"
+    "III",
+    "IXI",
+    "NNN"
   ],
   "key": {
-    "D": {
-      "item": "minecraft:netherite_block"
-    },
     "X": {
       "item": "packapunch:element_115"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
     }
   },
   "result": {

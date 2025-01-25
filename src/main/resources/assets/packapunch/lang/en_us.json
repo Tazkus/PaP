@@ -3,6 +3,7 @@
     "block.packapunch.arsenal_machine": "Arsenal Machine",
     "item.packapunch.artificial_115": "Artificial Element 115",
     "item.packapunch.element_115": "Refined Element 115",
+    "item.packapunch.liquid_115": "Liquid Element 115",
     "item.packapunch.cola_deadshot": "Deadshöt Daiquiri",
     "item.packapunch.cola_phd": "PhD Faller Soda",
     "item.packapunch.cola_melee": "Melee Macchiato",
@@ -11,7 +12,7 @@
     "effect.packapunch.phd": "PhD Faller",
     "effect.packapunch.speed": "Speed Cola",
     "effect.packapunch.melee": "Melee Macchiato",
-    "message.packapunch.retrofit_machine.upgraded": "Your Weapon Now Reach Level %s !!",
+    "message.packapunch.retrofit_machine.upgraded": "Your Weapon Now Reach Level [%s] !!",
     "message.packapunch.arsenal_machine.upgraded": "Your Weapon Now Reach Rarity (%s) !!",
     "gui.papckapunch.retrofit_machine.upgrade": "Upgrade",
     "gui.papckapunch.arsenal_machine.upgrade": "Upgrade",
@@ -31,5 +32,13 @@
     "config.packapunch.pap.rarity_cost_c": "Upgrade Cost of Rarity Tier C",
     "config.packapunch.pap.rarity_cost_b": "Upgrade Cost of Rarity Tier B",
     "config.packapunch.pap.rarity_cost_a": "Upgrade Cost of Rarity Tier A",
-    "config.packapunch.pap.rarity_cost_s": "Upgrade Cost of Rarity Tier S"
+    "config.packapunch.pap.rarity_cost_s": "Upgrade Cost of Rarity Tier S",
+    "config.packapunch.pap.pap_1_rate": "Damage rate of PaP Tier I",
+    "config.packapunch.pap.pap_2_rate": "Damage rate of PaP Tier II",
+    "config.packapunch.pap.pap_3_rate": "Damage rate of PaP Tier III",
+    "config.packapunch.pap.rarity_c_rate": "Damage rate of Rarity Tier C",
+    "config.packapunch.pap.rarity_b_rate": "Damage rate of Rarity Tier B",
+    "config.packapunch.pap.rarity_a_rate": "Damage rate of Rarity Tier A",
+    "config.packapunch.pap.rarity_s_rate": "Damage rate of Rarity Tier S",
+    "config.packapunch.pap.use_additive": "Damage rates are combined ADDITIVELY"
 }

@@ -16,24 +16,19 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModContainerScreen {
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent event) {
-        // use event.enqueueWork to ensure thread-safety (run in main thread)
-        event.enqueueWork(
-                () -> MenuScreens.register(ModContainer.RETROFIT_MACHINE_MENU.get(), RetrofitMachineScreen::new));
-        // event.enqueueWork(() -> MenuScreens.register(RetrofitMachineMenu.TYPE,
-        // RetrofitMachineScreen::new));
-        event.enqueueWork(
-                () -> MenuScreens.register(ModContainer.ARSENAL_MACHINE_MENU.get(), ArsenalMachineScreen::new));
-
-        // ItemBlockRenderTypes.setRenderLayer(ModBlocks.ARSENAL_MACHINE.get(),
-        // RenderType.solid());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.ARSENAL_MACHINE.get(),
-                RenderType.cutout());
-        // ItemBlockRenderTypes.setRenderLayer(ModBlocks.RETROFIT_MACHINE.get(),
-        // RenderType.solid());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.RETROFIT_MACHINE.get(),
-                RenderType.translucent());
-    }
+        @SubscribeEvent
+        public static void clientSetup(FMLClientSetupEvent event) {
+                // use event.enqueueWork to ensure thread-safety (run in main thread)
+                event.enqueueWork(
+                                () -> MenuScreens.register(ModContainer.RETROFIT_MACHINE_MENU.get(),
+                                                RetrofitMachineScreen::new));
+                event.enqueueWork(
+                                () -> MenuScreens.register(ModContainer.ARSENAL_MACHINE_MENU.get(),
+                                                ArsenalMachineScreen::new));
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.ARSENAL_MACHINE.get(),
+                                RenderType.translucent());
+                ItemBlockRenderTypes.setRenderLayer(ModBlocks.RETROFIT_MACHINE.get(),
+                                RenderType.translucent());
+        }
 
 }

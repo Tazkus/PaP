@@ -15,19 +15,50 @@ import java.util.List;
 
 import com.tacz.guns.api.item.IGun;
 
-import iskallia.vault.core.vault.Vault;
-
 public class Pap {
     // C, UC, R, E, L
     // static private float[] rarityModifiers = { 1.00f, 1.25f, 1.50f, 1.75f, 2.00f
     // };
-    static private float[] rarityModifiers = { 1.0f, 1.5f, 2.0f, 3.0f, 4.0f };
+    // static private float[] rarityModifiers = { 1.0f, 1.5f, 2.0f, 3.0f, 4.0f };
     // 无改造, 超改I, 超改II, 超改III
     // static private float[] papModifiers = { 1.0f, 2.0f, 3.0f, 4.0f };
-    static private float[] papModifiers = { 1.0f, 2.0f, 4.0f, 8.0f };
+    // static private float[] papModifiers = { 1.0f, 2.0f, 4.0f, 8.0f };
 
     public static boolean upgradable(int papLvl, int rarityLvl) {
         return papLvl >= 0 && papLvl < 3 && rarityLvl >= 0 && rarityLvl < 4;
+    }
+
+    public static float getRarityDamageRate(int level) {
+        switch (level) {
+            case 0:
+                return 1.0f;
+            case 1:
+                return PapConfig.RARITY_C_RATE.get().floatValue();
+            case 2:
+                return PapConfig.RARITY_B_RATE.get().floatValue();
+            case 3:
+                return PapConfig.RARITY_A_RATE.get().floatValue();
+            case 4:
+                return PapConfig.RARITY_S_RATE.get().floatValue();
+            default:
+                return 1.0f;
+        }
+    }
+
+    public static float getPapDamageRate(int level) {
+        switch (level) {
+            case 0:
+                return 1.0f;
+            case 1:
+                return PapConfig.PAP_1_RATE.get().floatValue();
+            case 2:
+                return PapConfig.PAP_2_RATE.get().floatValue();
+            case 3:
+                return PapConfig.PAP_3_RATE.get().floatValue();
+
+            default:
+                return 1.0f;
+        }
     }
 
     public static String getPaPTierSymbol(int level) {
@@ -35,14 +66,14 @@ public class Pap {
             case 0:
                 return "";
             case 1:
-                return "[I]";
-            // return "[Ⅰ]";
+                return "I";
+            // return "Ⅰ";
             case 2:
-                return "[II]";
-            // return "[Ⅱ]";
+                return "II";
+            // return "Ⅱ";
             case 3:
-                return "[III]";
-            // return "[Ⅲ]";
+                return "III";
+            // return "Ⅲ";
 
             default:
                 return "⑨";
@@ -77,12 +108,14 @@ public class Pap {
         if (iGun instanceof IMixinModernKineticGunItem) {
             int gunRarityTier = ((IMixinModernKineticGunItem) (Object) iGun).getRarityLevel(gun);
             int gunPaPTier = ((IMixinModernKineticGunItem) (Object) iGun).getPaPLevel(gun);
-            gunRarityModifier = rarityModifiers[gunRarityTier];
-            gunPaPModifier = papModifiers[gunPaPTier];
+            // gunRarityModifier = rarityModifiers[gunRarityTier];
+            // gunPaPModifier = papModifiers[gunPaPTier];
+            gunRarityModifier = getRarityDamageRate(gunRarityTier);
+            gunPaPModifier = getPapDamageRate(gunPaPTier);
         }
         // nerf it to additive 😂
-        return gunRarityModifier + gunPaPModifier - 1f;
-        // return gunRarityModifier * gunPaPModifier;
+        return PapConfig.USE_ADDITIVE_DAMAGE_MULTIPLIER.get() ? gunRarityModifier + gunPaPModifier - 1f
+                : gunRarityModifier * gunPaPModifier;
     }
 
     public static int getPapUpgradeCost(int papLevel) {

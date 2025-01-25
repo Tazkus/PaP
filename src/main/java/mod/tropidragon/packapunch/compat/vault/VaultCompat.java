@@ -34,14 +34,17 @@ public class VaultCompat {
     public static ItemStack getRarityUpgradeItem(int rarityLevel) {
         switch (rarityLevel) {
             default:
-                Ingredient ingredient = Ingredient.of(ModItems.VAULT_ALLOY);
+                Ingredient ingredient = Ingredient.of(ModItems.VAULT_SCRAP);
                 ItemStack[] items = ingredient.getItems();
                 return items[0];
         }
     }
 
+    private static final int SOUL_SHARD_INFLATE = 100;
+
     public static boolean consumePlayerSoulShard(IItemHandler handler, int needCount) {
         int count = 0;
+        needCount *= SOUL_SHARD_INFLATE;
         // Curio
 
         // Player Inventory

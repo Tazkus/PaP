@@ -28,10 +28,16 @@ public class ModItems {
                         ColaDeadshot::new);
         public static final RegistryObject<Item> COLA_PHD = ITEMS.register("cola_phd",
                         ColaPhd::new);
+        // public static final RegistryObject<Item> COLA_SPEED =
+        // ITEMS.register("cola_speed",
+        // ColaPhd::new);
 
+        // Materials
         public static RegistryObject<Item> ARTIFICIAL_115 = ITEMS.register("artificial_115",
                         () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
         public static RegistryObject<Item> ELEMENT_115 = ITEMS.register("element_115",
+                        () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+        public static RegistryObject<Item> LIQUID_115 = ITEMS.register("liquid_115",
                         () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
         @SubscribeEvent

@@ -3,7 +3,11 @@ package mod.tropidragon.packapunch.block;
 import javax.annotation.Nullable;
 
 import org.lwjgl.system.CallbackI.P;
+
+import com.tacz.guns.block.entity.StatueBlockEntity;
+
 import mod.tropidragon.packapunch.block.entity.ArsenalMachineBlockEntity;
+import mod.tropidragon.packapunch.init.ModBlocks;
 import mod.tropidragon.packapunch.inventory.ArsenalMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,13 +24,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -36,6 +43,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
@@ -51,6 +59,7 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
     // BlockStateProperties.HORIZONTAL_FACING;
 
     private static final VoxelShape RENDER_SHAPE = Shapes.box(0, 0, 0, 1, 1, 1);
+    public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final String SCREEN_ARSENAL_MACHINE = "screen.packapunch.arsenal_machine";
@@ -59,9 +68,12 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
         super(Properties.of(Material.METAL)
                 .sound(SoundType.METAL)
                 .strength(2.0F, 3.0F)
+                .lightLevel(state -> 1)
                 .noOcclusion());
         this.registerDefaultState(
-                this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+                this.stateDefinition.any()
+                        .setValue(HALF, DoubleBlockHalf.LOWER));
+        // .setValue(FACING, Direction.NORTH))
     }
 
     @SuppressWarnings("deprecation")
@@ -70,13 +82,26 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
         return RENDER_SHAPE;
     }
 
+    // @Override
+    // public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos
+    // pos, CollisionContext context) {
+    // return RENDER_SHAPE;
+    // }
+
     @Override
     public InteractionResult use(BlockState pState, Level level, BlockPos pos, Player player, InteractionHand pHand,
             BlockHitResult pHit) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
+            BlockPos blockPos;
+            if (pState.getValue(HALF) == DoubleBlockHalf.UPPER) {
+                blockPos = pos.below();
+            } else {
+                blockPos = pos;
+            }
+
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof ArsenalMachineBlockEntity machine) {
                 // player.openMenu(machine);
 
@@ -89,7 +114,7 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
                     @Override
                     public AbstractContainerMenu createMenu(int windowId, Inventory inventory,
                             Player player) {
-                        return new ArsenalMachineMenu(windowId, inventory, player, pos);
+                        return new ArsenalMachineMenu(windowId, inventory, player, blockPos);
                     }
                 };
                 NetworkHooks.openGui((ServerPlayer) player, containerProvider,
@@ -103,45 +128,98 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
+        // super.createBlockStateDefinition(builder);
         builder.add(FACING);
-        builder.add(BlockStateProperties.POWERED);
+        builder.add(HALF);
+        // builder.add(BlockStateProperties.POWERED);
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
-        return new ArsenalMachineBlockEntity(pos, blockState);
+        // return new ArsenalMachineBlockEntity(pos, blockState);
+        return blockState.getValue(HALF) == DoubleBlockHalf.LOWER ? new ArsenalMachineBlockEntity(pos, blockState)
+                : null;
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Direction direction = context.getHorizontalDirection();
+        Direction direction = context.getHorizontalDirection().getOpposite();
         BlockPos clickedPos = context.getClickedPos();
-        return super.getStateForPlacement(context).setValue(BlockStateProperties.POWERED, false);
+        BlockPos above = clickedPos.above();
+        Level level = context.getLevel();
+        if (level.getBlockState(above).canBeReplaced(context) && level.getWorldBorder().isWithinBounds(above)) {
+            return this.defaultBlockState()
+                    .setValue(FACING, direction);
+            // .setValue(BlockStateProperties.POWERED, false);
+            // return super.getStateForPlacement(context)
+            // .setValue(FACING, direction)
+            // .setValue(BlockStateProperties.POWERED, false);
+        }
+        return null;
+
     }
 
     @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
-        super.playerWillDestroy(level, pos, blockState, player);
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
+        return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+    }
+
+    @Override
+    public void setPlacedBy(Level world, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
             ItemStack stack) {
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        super.setPlacedBy(world, pos, state, placer, stack);
+        if (!world.isClientSide) {
+            BlockPos above = pos.above();
+            world.setBlock(above, state.setValue(HALF, DoubleBlockHalf.UPPER), Block.UPDATE_ALL);
+            world.blockUpdated(pos, Blocks.AIR);
+            state.updateNeighbourShapes(world, pos, Block.UPDATE_ALL);
+        }
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction,
             BlockState facingState, LevelAccessor level,
             BlockPos currentPos, BlockPos facingPos) {
-        return super.updateShape(state, direction, facingState, level, currentPos, facingPos);
+        DoubleBlockHalf half = state.getValue(HALF);
+
+        if (direction.getAxis() == Direction.Axis.Y) {
+            if (half.equals(DoubleBlockHalf.LOWER) && direction == Direction.UP
+                    || half.equals(DoubleBlockHalf.UPPER) && direction == Direction.DOWN) {
+                // 拆一半另外一半跟着没
+                if (!facingState.is(this)) {
+                    return Blocks.AIR.defaultBlockState();
+                }
+            }
+        }
+
+        return state;
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+
+        if (pState.getBlock() != pNewState.getBlock()) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof ArsenalMachineBlockEntity be) {
+
+                be.dropItem();
+            }
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {
-        return RenderShape.MODEL;
+        if (pState.getValue(HALF) == DoubleBlockHalf.LOWER) {
+            return RenderShape.MODEL;
+        }
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
@@ -150,27 +228,24 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return RENDER_SHAPE;
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        super.onBlockExploded(state, level, pos, explosion);
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof ArsenalMachineBlockEntity) {
-
-                ((ArsenalMachineBlockEntity) blockEntity).drops();
-            }
-        }
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState blockState, Player player) {
+        super.playerWillDestroy(level, pos, blockState, player);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
             BlockEntityType<T> type) {
+        // return state.getValue(HALF).equals(DoubleBlockHalf.LOWER) &&
+        // level.isClientSide()
+        // ? createTickerHelper(type, ModBlocks.ARSENAL_MACHINE_BE.get(),
+        // ArsenalMachineBlockEntity::clientTick)
+        // : null;
         if (level.isClientSide()) {
             return null;
         }

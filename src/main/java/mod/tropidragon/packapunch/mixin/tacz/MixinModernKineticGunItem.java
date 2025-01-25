@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.item.ModernKineticGunItem;
+import com.tacz.guns.item.ModernKineticGunScriptAPI;
 import com.tacz.guns.resource.index.CommonGunIndex;
 import com.tacz.guns.resource.pojo.data.gun.BulletData;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
@@ -66,6 +67,16 @@ public class MixinModernKineticGunItem implements IMixinModernKineticGunItem {
         nbt.putInt(GUN_PAP_TAG, level);
         gunItem.setTag(nbt);
     }
+
+    // @Inject(method =
+    // "defaultTickReload(Lcom/tacz/guns/item/ModernKineticGunScriptAPI;)Lcom/tacz/guns/api/entity/ReloadState;",
+    // at = @At(value = "INVOKE_ASSIGN", target =
+    // "Lcom/tacz/guns/resource/pojo/data/gun/GunReloadData;getCooldown()Lcom/tacz/guns/resource/pojo/data/gun/GunReloadTime;",
+    // remap = false), locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
+    // public void mixinDefaultTickReload(ModernKineticGunScriptAPI api,
+    // CallbackInfo ci) {
+
+    // }
 
     // "shoot(Lnet/minecraft/world/item/ItemStack;Ljava/util/function/Supplier;Ljava/util/function/Supplier;ZLnet/minecraft/world/entity/LivingEntity;)V"
     // 此处修改，可以影响到弹种的发射数等其他属性

@@ -76,13 +76,6 @@ public class RetrofitMachineBlockEntity extends BlockEntity {
     // return new TextComponent("Retrofit Machine");
     // }
 
-    // @Nullable
-    // @Override
-    // public AbstractContainerMenu createMenu(int id, Inventory inventory, Player
-    // player) {
-    // return new RetrofitMachineMenu(id, inventory, player);
-    // }
-
     // private final CustomEnergyStorage energyStorage = createEnergy();
     // private final LazyOptional<IEnergyStorage> energy = LazyOptional.of(() ->
     // energyStorage);

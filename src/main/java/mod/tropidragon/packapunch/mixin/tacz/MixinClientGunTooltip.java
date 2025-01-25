@@ -98,8 +98,8 @@ public class MixinClientGunTooltip {
             int papLevel = ((IMixinModernKineticGunItem) (Object) iGun).getPaPLevel(gun);
             int rarityLevel = ((IMixinModernKineticGunItem) (Object) iGun).getRarityLevel(gun);
 
-            String papTier = Pap.getPaPTierSymbol(papLevel);
-            // String papTier = String.format("[%s]", getPaPTierSymbol(papLevel));
+            // String papTier = Pap.getPaPTierSymbol(papLevel);
+            String papTier = String.format("[%s]", Pap.getPaPTierSymbol(papLevel));
             String rarityTier = Pap.getRarityTierSymbol(rarityLevel);
 
             this.levelInfo = (new TranslatableComponent("tooltip.tacz.gun.level"))

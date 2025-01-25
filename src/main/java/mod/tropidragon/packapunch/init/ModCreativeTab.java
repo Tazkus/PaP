@@ -56,8 +56,11 @@ public class ModCreativeTab {
         addCreativeTabs("other", new TranslatableComponent("itemGroup.tab.packapunch.other"),
                 () -> ModItems.RETROFIT_MACHINE.get().getDefaultInstance(), output -> {
                     output.add(ModItems.RETROFIT_MACHINE.get().getDefaultInstance());
+                    output.add(ModItems.ARSENAL_MACHINE.get().getDefaultInstance());
                     output.add(ModItems.ARTIFICIAL_115.get().getDefaultInstance());
                     output.add(ModItems.ELEMENT_115.get().getDefaultInstance());
+                    output.add(ModItems.COLA_DEADSHOT.get().getDefaultInstance());
+                    output.add(ModItems.COLA_PHD.get().getDefaultInstance());
                 });
     }
 }
