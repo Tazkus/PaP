@@ -3,10 +3,10 @@ package mod.tropidragon.packapunch.effect;
 import com.tacz.guns.api.entity.KnockBackModifier;
 
 import mod.tropidragon.packapunch.init.ModEffects;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -15,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -38,7 +37,7 @@ public class PhdEffect extends MobEffect {
         return true;
     }
 
-    private static final float FALL_THRESHOLD = 3.5F;
+    private static final float FALL_THRESHOLD = 3F;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPlayerFall(LivingFallEvent event) {
@@ -81,43 +80,44 @@ public class PhdEffect extends MobEffect {
                 }
 
                 // particle
-                float particleSpeed = 1;
-                Vec3 parStart = player.position().add(0, player.getBbHeight(), 0);
+                float particleSpeed = 0.6f;
+                Vec3 parStart = player.position();
+                // .add(0, -player.getBbHeight() / 2, 0);
                 // Vec3 parEnd = parStart.add(0, nearbyVictim.getBbHeight() / 2, 0);
                 // Vec3 dir = parEnd.subtract(parStart).normalize().yRot(distance);
                 int amount = getExplosionParticleAmount(distance);
                 for (int i = 0; i < amount; i++) {
 
-                    Vec3 dir = new Vec3(2, 0, 0).yRot(i / amount * 360);
+                    Vec3 dir = new Vec3(0.5, 0, 0).yRot(i / amount * 360);
                     level.sendParticles(ParticleTypes.DRAGON_BREATH,
                             parStart.x, parStart.y, parStart.z,
-                            2,
+                            3,
                             dir.x, dir.y, dir.z,
-                            particleSpeed);
+                            0.25f);
+                    level.sendParticles(ParticleTypes.DRAGON_BREATH,
+                            parStart.x, parStart.y, parStart.z,
+                            5,
+                            dir.x, dir.y, dir.z,
+                            1f);
                 }
             }
         }
     }
 
+    private static float RANGE_CAP = 12;
+
     private static float getExplosionRange(float distance) {
-        return (distance - FALL_THRESHOLD) * 0.5f;
+        return Math.min((distance - FALL_THRESHOLD) * 0.5f, RANGE_CAP);
     }
 
+    private static double DAMAGE_CAP = 999;
+
     private static float getExlosionDamage(float distance) {
-        return distance * 1.0f;
+        return (float) Math.min(Math.pow((double) distance, 1.5), DAMAGE_CAP);
     }
 
     private static int getExplosionParticleAmount(float distance) {
-        if (distance < 10) {
-            return 80;
-        } else if (distance < 15) {
-            return 120;
-        } else if (distance < 25) {
-            return 160;
-        } else if (distance < 50) {
-            return 240;
-        }
-        return 320;
+        return Math.min(4 * Mth.ceil(distance), 64);
     }
 
     @SubscribeEvent
