@@ -17,11 +17,11 @@ import mod.tropidragon.packapunch.inventory.ArsenalMachineMenu;
 import mod.tropidragon.packapunch.network.NetworkHandler;
 import mod.tropidragon.packapunch.network.message.ClientMessageUpgrade;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.CreativeModeTab;
@@ -69,29 +69,29 @@ public class ArsenalMachineScreen extends AbstractContainerScreen<ArsenalMachine
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
+    public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground(gui);
+        super.render(gui, mouseX, mouseY, partialTicks);
+        this.renderTooltip(gui, mouseX, mouseY);
 
-        this.renderPageIcon(matrixStack);
+        this.renderPageIcon(gui);
 
         int level = this.menu.getWeaponRarityLevel();
         if (Pap.upgradable(0, level)) {
-            this.renderIngredient(matrixStack, level);
+            this.renderIngredient(gui, level);
         } else {
-            drawCenteredString(matrixStack, font,
-                    new TranslatableComponent("gui.papckapunch.arsenal_machine.upgrade"),
+            gui.drawCenteredString(font,
+                    Component.translatable("gui.papckapunch.arsenal_machine.upgrade"),
                     leftPos + 88, topPos + 60 + 5, 0xFFFFFF);
         }
     }
 
     @Override
-    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics poseStack, int mouseX, int mouseY) {
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, GUI);
@@ -101,7 +101,7 @@ public class ArsenalMachineScreen extends AbstractContainerScreen<ArsenalMachine
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
 
-        this.blit(matrixStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+        gui.blit(GUI, x, y, 0, 0, this.imageWidth, this.imageHeight);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class ArsenalMachineScreen extends AbstractContainerScreen<ArsenalMachine
     private void addCraftButton() {
         this.addRenderableWidget(
                 new ImageButton(leftPos + 88 - 24, topPos + 60, 48, 18, 138, 164, 18, TEXTURE,
-                        // new TextComponent("Upgrade"),
+                        // Component.literal("Upgrade"),
                         b -> {
                             NetworkHandler.CHANNEL.sendToServer(new ClientMessageUpgrade(this.menu.containerId));
                         }));
@@ -133,7 +133,7 @@ public class ArsenalMachineScreen extends AbstractContainerScreen<ArsenalMachine
         }
     }
 
-    private void renderPageIcon(PoseStack poseStack) {
+    private void renderPageIcon(GuiGraphics gui) {
         // poseStack.pushPose();
         // poseStack.translate(0, 0, 200);
 
@@ -142,8 +142,8 @@ public class ArsenalMachineScreen extends AbstractContainerScreen<ArsenalMachine
             int offsetY = topPos - 26 + 5;
 
             String type = recipeKeys.get(i);
-            ResourceLocation tabId = new ResourceLocation(GunMod.MOD_ID, type);
-            CreativeModeTab modTab = ModCreativeTabs.getModTabs(tabId);
+            // ResourceLocation tabId = new ResourceLocation(GunMod.MOD_ID, type);
+            CreativeModeTab modTab = getGunModTab(i);
             ItemStack icon = ItemStack.EMPTY;
             if (modTab != null) {
                 icon = modTab.getIconItem();
@@ -155,24 +155,37 @@ public class ArsenalMachineScreen extends AbstractContainerScreen<ArsenalMachine
 
             // Minecraft mc = Minecraft.getInstance();
             // mc.getItemRenderer().renderGuiItem(icon, offsetX, offsetY);
-            this.itemRenderer.renderAndDecorateFakeItem(icon, offsetX, offsetY);
+            gui.renderFakeItem(icon, offsetX, offsetY);
         }
     }
 
-    private void renderIngredient(PoseStack poseStack, int weaponLevel) {
+    private static CreativeModeTab getGunModTab(int tabId) {
+        switch (tabId) {
+            case 0:
+                return ModCreativeTabs.GUN_RIFLE_TAB.get();
+            case 1:
+                return ModCreativeTabs.ATTACHMENT_EXTENDED_MAG_TAB.get();
+            default:
+                return ModCreativeTabs.ATTACHMENT_EXTENDED_MAG_TAB.get();
+        }
+    }
+
+    private void renderIngredient(GuiGraphics gui, int weaponLevel) {
         int offsetX = leftPos + 80;
         int offsetY = topPos + 60 + 1;
 
         ItemStack item = Pap.getRarityUpgradeItem(weaponLevel);
         int count = Pap.getRarityUpgradeCost(weaponLevel);
 
-        this.itemRenderer.renderAndDecorateFakeItem(item, offsetX, offsetY);
+        gui.renderFakeItem(item, offsetX, offsetY);
 
+        PoseStack poseStack = gui.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 200);
         poseStack.scale(0.5f, 0.5f, 1);
 
         int color = 0xFFFFFF;
-        font.draw(poseStack, String.format("%d", count), (offsetX + 4) * 2, (offsetY + 10) * 2, color);
+        gui.drawCenteredString(font, String.format("%d", count), (offsetX + 4) * 2, (offsetY + 10) * 2, color);
+        poseStack.popPose();
     }
 }

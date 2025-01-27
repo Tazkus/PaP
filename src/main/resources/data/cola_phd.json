@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "packapunch:artificial_115"
+        },
+        {
+            "item": "minecraft:golden_carrot",
+            "count": 3
+        }
+    ],
+    "result": {
+        "item": "packapunch:cola_phd",
+        "count": 3
+    }
+}

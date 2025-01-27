@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "category": "misc",
+    "ingredients": [
+        {
+            "item": "packapunch:artificial_115"
+        },
+        {
+            "item": "minecraft:chorus_fruit",
+            "count": 3
+        }
+    ],
+    "result": {
+        "item": "packapunch:cola_deadshot",
+        "count": 3
+    }
+}

@@ -22,7 +22,7 @@ public class PerkCola extends Item {
     protected static final int EFFECT_DURATION = 2400;
 
     public PerkCola(FoodProperties properties, String registryName) {
-        super(new Item.Properties().tab(CreativeModeTab.TAB_FOOD).food(properties));
+        super(new Item.Properties().food(properties));
         // this.setRegistryName(registryName);
     }
 

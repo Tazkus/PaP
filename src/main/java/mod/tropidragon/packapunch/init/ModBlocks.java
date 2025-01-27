@@ -23,7 +23,7 @@ public class ModBlocks {
 
         // BlockEntity
         public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister
-                        .create(ForgeRegistries.BLOCK_ENTITIES, Divinium.MODID);
+                        .create(ForgeRegistries.BLOCK_ENTITY_TYPES, Divinium.MODID);
 
         public static RegistryObject<BlockEntityType<RetrofitMachineBlockEntity>> RETROFIT_MACHINE_BE = BLOCK_ENTITIES
                         .register("retrofit_machine_entity", () -> RetrofitMachineBlockEntity.TYPE);

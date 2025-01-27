@@ -3,16 +3,14 @@ package mod.tropidragon.packapunch.init;
 import mod.tropidragon.packapunch.Divinium;
 import mod.tropidragon.packapunch.drink.ColaDeadshot;
 import mod.tropidragon.packapunch.drink.ColaPhd;
-import mod.tropidragon.packapunch.drink.PerkCola;
 import mod.tropidragon.packapunch.item.ArsenalMachineItem;
 import mod.tropidragon.packapunch.item.RetrofitMachineItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -34,14 +32,16 @@ public class ModItems {
 
         // Materials
         public static RegistryObject<Item> ARTIFICIAL_115 = ITEMS.register("artificial_115",
-                        () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+                        () -> new Item(new Item.Properties()));
         public static RegistryObject<Item> ELEMENT_115 = ITEMS.register("element_115",
-                        () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+                        () -> new Item(new Item.Properties()));
         public static RegistryObject<Item> LIQUID_115 = ITEMS.register("liquid_115",
-                        () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
+                        () -> new Item(new Item.Properties()));
 
         @SubscribeEvent
-        public static void onItemRegister(RegistryEvent.Register<Item> event) {
-                ModCreativeTab.initCreativeTabs();
+        public static void onItemRegister(RegisterEvent event) {
+                // ModCreativeTab.initCreativeTabs();
+                if (event.getRegistryKey().equals(ForgeRegistries.ITEMS.getRegistryKey())) {
+                }
         }
 }

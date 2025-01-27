@@ -34,9 +34,8 @@ import net.minecraft.world.SimpleContainer;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -73,7 +72,7 @@ public class RetrofitMachineBlockEntity extends BlockEntity {
 
     // @Override
     // public Component getDisplayName() {
-    // return new TextComponent("Retrofit Machine");
+    // return Component.literal("Retrofit Machine");
     // }
 
     // private final CustomEnergyStorage energyStorage = createEnergy();
@@ -150,7 +149,7 @@ public class RetrofitMachineBlockEntity extends BlockEntity {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return handler.cast();
         }
         // if (cap == CapabilityEnergy.ENERGY) {

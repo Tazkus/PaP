@@ -3,9 +3,8 @@ package mod.tropidragon.packapunch.mixin.tacz;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
@@ -102,10 +101,10 @@ public class MixinClientGunTooltip {
             String papTier = String.format("[%s]", Pap.getPaPTierSymbol(papLevel));
             String rarityTier = Pap.getRarityTierSymbol(rarityLevel);
 
-            this.levelInfo = (new TranslatableComponent("tooltip.tacz.gun.level"))
-                    .append((new TextComponent(rarityTier)).withStyle(getRarityColor(rarityLevel)))
+            this.levelInfo = (Component.translatable("tooltip.tacz.gun.level"))
+                    .append((Component.literal(rarityTier)).withStyle(getRarityColor(rarityLevel)))
                     .append(" ")
-                    .append((new TextComponent(papTier)).withStyle(ChatFormatting.WHITE));
+                    .append((Component.literal(papTier)).withStyle(ChatFormatting.WHITE));
 
             Font font = Minecraft.getInstance().font;
             this.maxWidth = Math.max(font.width(this.levelInfo), this.maxWidth);

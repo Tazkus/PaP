@@ -8,8 +8,7 @@ import mod.tropidragon.packapunch.common.Pap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
@@ -46,11 +45,11 @@ public class ServerMessageUpgrade {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.containerMenu.containerId == containerId) {
             if (Minecraft.getInstance().screen instanceof RetrofitMachineScreen screen) {
-                player.displayClientMessage(new TranslatableComponent("message.packapunch.retrofit_machine.upgraded",
+                player.displayClientMessage(Component.translatable("message.packapunch.retrofit_machine.upgraded",
                         Pap.getPaPTierSymbol(weaponLevel)), false);
             }
             if (Minecraft.getInstance().screen instanceof ArsenalMachineScreen screen) {
-                player.displayClientMessage(new TranslatableComponent("message.packapunch.arsenal_machine.upgraded",
+                player.displayClientMessage(Component.translatable("message.packapunch.arsenal_machine.upgraded",
                         Pap.getRarityTierSymbol(weaponLevel)), false);
             }
             // screen.playUpgradeAnimation()

@@ -1,7 +1,5 @@
 package mod.tropidragon.packapunch.inventory;
 
-import org.lwjgl.system.CallbackI.I;
-
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.item.ModernKineticGunItem;
 import com.tacz.guns.network.message.ServerMessageCraft;
@@ -29,10 +27,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -56,10 +53,10 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
 
         BlockEntity be = player.getCommandSenderWorld().getBlockEntity(pos);
         blockEntity = ((RetrofitMachineBlockEntity) be);
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.playerEntity = player;
 
-        this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 38));
         });
 
@@ -82,7 +79,7 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
     }
 
     public int getEnergy() {
-        return blockEntity.getCapability(CapabilityEnergy.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
+        return blockEntity.getCapability(ForgeCapabilities.ENERGY).map(IEnergyStorage::getEnergyStored).orElse(0);
     }
 
     @Override
@@ -174,7 +171,7 @@ public class RetrofitMachineMenu extends AbstractContainerMenu {
             int needCount = Pap.getPapUpgradeCost(lvl);
 
             // 检查材料数量
-            player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> {
+            player.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(handler -> {
 
                 if (PlayerInventoryUtil.consumePlayerItem(handler, item, needCount)) {
                     // 升级武器

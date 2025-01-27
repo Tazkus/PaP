@@ -64,7 +64,7 @@ public class NetworkHandler {
     }
 
     public static void sendToDimension(Object message, final Entity centerEntity) {
-        ResourceKey<Level> dimension = centerEntity.level.dimension();
+        ResourceKey<Level> dimension = centerEntity.level().dimension();
         CHANNEL.send(PacketDistributor.DIMENSION.with(() -> dimension), message);
     }
 }

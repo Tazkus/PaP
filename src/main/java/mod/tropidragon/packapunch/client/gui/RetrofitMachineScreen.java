@@ -1,5 +1,6 @@
 package mod.tropidragon.packapunch.client.gui;
 
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +18,13 @@ import mod.tropidragon.packapunch.inventory.RetrofitMachineMenu;
 import mod.tropidragon.packapunch.network.NetworkHandler;
 import mod.tropidragon.packapunch.network.message.ClientMessageUpgrade;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -55,32 +55,31 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
-        this.renderTooltip(matrixStack, mouseX, mouseY);
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        this.renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
+        this.renderTooltip(graphics, mouseX, mouseY);
 
         // 绘制强化方案
         int level = this.menu.getWeaponPapLevel();
         if (Pap.upgradable(level, 0)) {
             // blit(pPoseStack, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
-            this.renderIngredient(matrixStack, level);
+            this.renderIngredient(graphics, level);
         } else {
             // 按钮文本
-            drawCenteredString(matrixStack, font,
-                    new TranslatableComponent("gui.papckapunch.retrofit_machine.upgrade"),
+            graphics.drawCenteredString(font, Component.translatable("gui.papckapunch.retrofit_machine.upgrade"),
                     leftPos + 88, topPos + 60 + 5, 0xFFFFFF);
         }
     }
 
     @Override
-    protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+    protected void renderLabels(GuiGraphics matrixStack, int mouseX, int mouseY) {
         // drawString(matrixStack, Minecraft.getInstance().font, "Energy: " +
         // menu.getEnergy(), 10, 10, 0xffffff);
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics gui, float partialTicks, int mouseX, int mouseY) {
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -90,9 +89,9 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
 
-        this.blit(matrixStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+        gui.blit(GUI, x, y, 0, 0, this.imageWidth, this.imageHeight);
         // PAP招牌
-        this.blit(matrixStack, x, y - 33 - 2, 0, 169, this.imageWidth, 33);
+        gui.blit(GUI, x, y - 33 - 2, 0, 169, this.imageWidth, 33);
         // 绘制进度条
         // this.blit(matrixStack, x + 102, y + 41, 176, 0, 8, menu.getScaledProgress());
     }
@@ -100,26 +99,30 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
     private void addCraftButton() {
         this.addRenderableWidget(
                 new ImageButton(leftPos + 88 - 24, topPos + 60, 48, 18, 138, 164, 18, TEXTURE,
-                        // new TextComponent("Upgrade"),
+                        // Component.literal("Upgrade"),
                         b -> {
                             NetworkHandler.CHANNEL.sendToServer(new ClientMessageUpgrade(this.menu.containerId));
                         }));
     }
 
-    private void renderIngredient(PoseStack poseStack, int weaponLevel) {
+    private void renderIngredient(GuiGraphics gui, int weaponLevel) {
         int offsetX = leftPos + 80;
         int offsetY = topPos + 60 + 1;
 
         ItemStack item = Pap.getPapUpgradeItem(weaponLevel);
         int count = Pap.getPapUpgradeCost(weaponLevel);
 
-        this.itemRenderer.renderAndDecorateFakeItem(item, offsetX, offsetY);
+        gui.renderFakeItem(item, offsetX, offsetY);
+
+        PoseStack poseStack = gui.pose();
 
         poseStack.pushPose();
         poseStack.translate(0, 0, 200);
         poseStack.scale(0.5f, 0.5f, 1);
 
         int color = 0xFFFFFF;
-        font.draw(poseStack, String.format("%d", count), (offsetX + 4) * 2, (offsetY + 10) * 2, color);
+        gui.drawCenteredString(font, String.format("%d", count), (offsetX + 4) * 2, (offsetY + 10) * 2, color);
+
+        poseStack.popPose();
     }
 }

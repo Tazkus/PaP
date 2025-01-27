@@ -20,8 +20,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.items.CapabilityItemHandler;
+// import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -40,10 +41,10 @@ public class ArsenalMachineMenu extends AbstractContainerMenu {
         checkContainerSize(inventory, 1);
         BlockEntity be = player.getCommandSenderWorld().getBlockEntity(pos);
         blockEntity = be;
-        this.level = inventory.player.level;
+        this.level = inventory.player.level();
         this.playerEntity = player;
 
-        this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 80, 38));
         });
 
@@ -139,7 +140,7 @@ public class ArsenalMachineMenu extends AbstractContainerMenu {
             int needCount = Pap.getRarityUpgradeCost(lvl);
 
             // 扣除材料
-            player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(handler -> {
+            player.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(handler -> {
                 if (PlayerInventoryUtil.consumePlayerItem(handler, item, needCount)) {
                     ArsenalMachineBlockEntity.upgradeWeapon(be);
                     player.inventoryMenu.broadcastFullState();

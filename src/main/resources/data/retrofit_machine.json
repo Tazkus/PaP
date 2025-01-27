@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "pattern": [
+        "###",
+        "#O#",
+        "XXX"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:iron_ingot"
+        },
+        "O": {
+            "item": "packapunch:element_115"
+        },
+        "X": {
+            "item": "minecraft:netherite_ingot"
+        }
+    },
+    "result": {
+        "item": "packapunch:retrofit_machine"
+    }
+}
