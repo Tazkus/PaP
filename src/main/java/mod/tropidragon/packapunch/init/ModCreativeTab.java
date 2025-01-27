@@ -8,7 +8,6 @@ import com.google.common.collect.Maps;
 import mod.tropidragon.packapunch.Divinium;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +52,7 @@ public class ModCreativeTab {
     }
 
     public static void initCreativeTabs() {
-        addCreativeTabs("other", new TranslatableComponent("itemGroup.tab.packapunch.other"),
+        addCreativeTabs("other", Component.translatable("itemGroup.tab.packapunch.other"),
                 () -> ModItems.RETROFIT_MACHINE.get().getDefaultInstance(), output -> {
                     output.add(ModItems.RETROFIT_MACHINE.get().getDefaultInstance());
                     output.add(ModItems.ARSENAL_MACHINE.get().getDefaultInstance());

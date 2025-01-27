@@ -42,7 +42,7 @@ public class PhdEffect extends MobEffect {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onPlayerFall(LivingFallEvent event) {
         Entity entity = event.getEntity();
-        if (!(event.getEntity().level.isClientSide()) && event.getEntityLiving() instanceof Player player) {
+        if (!(event.getEntity().level.isClientSide()) && event.getEntity() instanceof Player player) {
             if (event.getDistance() < FALL_THRESHOLD || !player.hasEffect(ModEffects.PHD.get())) {
                 return;
             }
@@ -52,7 +52,7 @@ public class PhdEffect extends MobEffect {
             event.setCanceled(true);
 
             // sound
-            float sfxPitch = player.getRandom().nextFloat(0.8F, 1.25F);
+            float sfxPitch = player.getRandom().nextFloat();
             player.level.playSound(null, player, SoundEvents.GENERIC_EXPLODE,
                     player.getSoundSource(), 1, sfxPitch);
 
@@ -123,7 +123,7 @@ public class PhdEffect extends MobEffect {
     @SubscribeEvent
     public static void onPlayerHurt(LivingHurtEvent event) {
 
-        if (!(event.getEntity().level.isClientSide()) && event.getEntityLiving() instanceof Player player) {
+        if (!(event.getEntity().level.isClientSide()) && event.getEntity() instanceof Player player) {
             if (!player.hasEffect(ModEffects.PHD.get())) {
                 return;
             }

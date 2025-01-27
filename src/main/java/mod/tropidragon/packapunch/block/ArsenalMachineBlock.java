@@ -2,8 +2,6 @@ package mod.tropidragon.packapunch.block;
 
 import javax.annotation.Nullable;
 
-import org.lwjgl.system.CallbackI.P;
-
 import com.tacz.guns.block.entity.StatueBlockEntity;
 
 import mod.tropidragon.packapunch.block.entity.ArsenalMachineBlockEntity;
@@ -12,7 +10,6 @@ import mod.tropidragon.packapunch.inventory.ArsenalMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -108,7 +105,7 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return new TranslatableComponent(SCREEN_ARSENAL_MACHINE);
+                        return Component.translatable(SCREEN_ARSENAL_MACHINE);
                     }
 
                     @Override
@@ -117,7 +114,7 @@ public class ArsenalMachineBlock extends BaseEntityBlock {
                         return new ArsenalMachineMenu(windowId, inventory, player, blockPos);
                     }
                 };
-                NetworkHooks.openGui((ServerPlayer) player, containerProvider,
+                NetworkHooks.openScreen((ServerPlayer) player, containerProvider,
                         blockEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("container provider is missing!");

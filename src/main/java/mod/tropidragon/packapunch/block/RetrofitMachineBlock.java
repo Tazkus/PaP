@@ -7,7 +7,6 @@ import mod.tropidragon.packapunch.inventory.RetrofitMachineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -94,7 +93,7 @@ public class RetrofitMachineBlock extends BaseEntityBlock {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return new TranslatableComponent(SCREEN_RETROFIT_MACHINE);
+                        return Component.translatable(SCREEN_RETROFIT_MACHINE);
                     }
 
                     @Override
@@ -103,7 +102,7 @@ public class RetrofitMachineBlock extends BaseEntityBlock {
                         return new RetrofitMachineMenu(windowId, inventory, player, pos);
                     }
                 };
-                NetworkHooks.openGui((ServerPlayer) player, containerProvider,
+                NetworkHooks.openScreen((ServerPlayer) player, containerProvider,
                         blockEntity.getBlockPos());
             } else {
                 throw new IllegalStateException("container provider is missing!");

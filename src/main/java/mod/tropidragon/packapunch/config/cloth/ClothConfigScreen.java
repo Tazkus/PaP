@@ -10,9 +10,8 @@ import net.minecraft.client.gui.components.MultiLineLabel;
 import net.minecraft.client.gui.screens.ConfirmLinkScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.client.ConfigGuiHandler;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +22,7 @@ public class ClothConfigScreen extends Screen {
     private MultiLineLabel message = MultiLineLabel.EMPTY;
 
     protected ClothConfigScreen(Screen lastScreen) {
-        super(new TextComponent("Cloth Config API"));
+        super(Component.literal("Cloth Config API"));
         this.lastScreen = lastScreen;
     }
 
@@ -33,8 +32,9 @@ public class ClothConfigScreen extends Screen {
 
     public static void registerNoClothConfigPage() {
         if (!ModList.get().isLoaded(CompatRegistry.CLOTH_CONFIG)) {
-            ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class,
-                    () -> new ConfigGuiHandler.ConfigGuiFactory((client, parent) -> new ClothConfigScreen(parent)));
+            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
+                    () -> new ConfigScreenHandler.ConfigScreenFactory(
+                            (client, parent) -> new ClothConfigScreen(parent)));
         }
     }
 
@@ -43,10 +43,10 @@ public class ClothConfigScreen extends Screen {
         int posX = (this.width - 200) / 2;
         int posY = this.height / 2;
         this.message = MultiLineLabel.create(this.font,
-                new TranslatableComponent("gui.packapunch.cloth_config_warning.tips"), 300);
+                Component.translatable("gui.packapunch.cloth_config_warning.tips"), 300);
 
         this.addRenderableWidget(new Button(posX, posY - 15, 200, 20,
-                new TranslatableComponent("gui.packapunch.cloth_config_warning.download"),
+                Component.translatable("gui.packapunch.cloth_config_warning.download"),
                 b -> openUrl(clothConfigUrl)));
         this.addRenderableWidget(new Button(posX, posY + 50, 200, 20, CommonComponents.GUI_BACK,
                 (pressed) -> Minecraft.getInstance().setScreen(this.lastScreen)));

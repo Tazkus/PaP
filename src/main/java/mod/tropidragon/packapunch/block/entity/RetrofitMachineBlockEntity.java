@@ -73,7 +73,7 @@ public class RetrofitMachineBlockEntity extends BlockEntity {
 
     // @Override
     // public Component getDisplayName() {
-    // return new TextComponent("Retrofit Machine");
+    // return Component.literal("Retrofit Machine");
     // }
 
     // private final CustomEnergyStorage energyStorage = createEnergy();

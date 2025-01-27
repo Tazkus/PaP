@@ -23,8 +23,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
@@ -68,7 +66,7 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
         } else {
             // 按钮文本
             drawCenteredString(matrixStack, font,
-                    new TranslatableComponent("gui.papckapunch.retrofit_machine.upgrade"),
+                    Component.translatable("gui.papckapunch.retrofit_machine.upgrade"),
                     leftPos + 88, topPos + 60 + 5, 0xFFFFFF);
         }
     }
@@ -100,7 +98,7 @@ public class RetrofitMachineScreen extends AbstractContainerScreen<RetrofitMachi
     private void addCraftButton() {
         this.addRenderableWidget(
                 new ImageButton(leftPos + 88 - 24, topPos + 60, 48, 18, 138, 164, 18, TEXTURE,
-                        // new TextComponent("Upgrade"),
+                        // Component.literal("Upgrade"),
                         b -> {
                             NetworkHandler.CHANNEL.sendToServer(new ClientMessageUpgrade(this.menu.containerId));
                         }));

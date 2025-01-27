@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModContainer {
         public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister
-                        .create(ForgeRegistries.CONTAINERS, Divinium.MODID);
+                        .create(ForgeRegistries.MENU_TYPES, Divinium.MODID);
 
         public static final RegistryObject<MenuType<ArsenalMachineMenu>> ARSENAL_MACHINE_MENU = CONTAINERS
                         .register("arsenal_machine_menu", () -> ArsenalMachineMenu.TYPE);

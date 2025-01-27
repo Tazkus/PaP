@@ -1,7 +1,7 @@
 package mod.tropidragon.packapunch.common;
 
 import mod.tropidragon.packapunch.common.internal.IMixinModernKineticGunItem;
-import mod.tropidragon.packapunch.compat.vault.VaultCompat;
+// import mod.tropidragon.packapunch.compat.vault.VaultCompat;
 import mod.tropidragon.packapunch.config.subconfig.PapConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -147,9 +147,9 @@ public class Pap {
     }
 
     public static ItemStack getPapUpgradeItem(int papLevel) {
-        if (VaultCompat.INSTALLED) {
-            return VaultCompat.getPapUpgradeItem(papLevel);
-        }
+        // if (VaultCompat.INSTALLED) {
+        // return VaultCompat.getPapUpgradeItem(papLevel);
+        // }
         switch (papLevel) {
             case 0:
                 return getConfigItem(PapConfig.PAP_ITEM_1.get(), Items.DIAMOND)[0];
@@ -165,9 +165,9 @@ public class Pap {
     }
 
     public static ItemStack getRarityUpgradeItem(int rarityLvl) {
-        if (VaultCompat.INSTALLED) {
-            return VaultCompat.getRarityUpgradeItem(rarityLvl);
-        }
+        // if (VaultCompat.INSTALLED) {
+        // return VaultCompat.getRarityUpgradeItem(rarityLvl);
+        // }
         switch (rarityLvl) {
             case 0:
                 return getConfigItem(PapConfig.RARITY_ITEM_C.get(), Items.NETHERITE_SCRAP)[0];

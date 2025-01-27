@@ -1,10 +1,10 @@
 package mod.tropidragon.packapunch.inventory;
 
-import iskallia.vault.init.ModItems;
+// import iskallia.vault.init.ModItems;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
 import mod.tropidragon.packapunch.block.entity.RetrofitMachineBlockEntity;
 import mod.tropidragon.packapunch.common.Pap;
-import mod.tropidragon.packapunch.compat.vault.VaultCompat;
+// import mod.tropidragon.packapunch.compat.vault.VaultCompat;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -30,9 +30,9 @@ public class PlayerInventoryUtil {
     }
 
     public static boolean consumePlayerItem(IItemHandler handler, Item item, int needCount) {
-        if (VaultCompat.INSTALLED && item == ModItems.SOUL_SHARD) {
-            return VaultCompat.consumePlayerSoulShard(handler, needCount);
-        }
+        // if (VaultCompat.INSTALLED && item == ModItems.SOUL_SHARD) {
+        // return VaultCompat.consumePlayerSoulShard(handler, needCount);
+        // }
 
         int hasCount = 0;
         Int2IntArrayMap recordCount = new Int2IntArrayMap();

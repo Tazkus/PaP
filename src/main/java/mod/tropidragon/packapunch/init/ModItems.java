@@ -8,11 +8,11 @@ import mod.tropidragon.packapunch.item.ArsenalMachineItem;
 import mod.tropidragon.packapunch.item.RetrofitMachineItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -41,7 +41,7 @@ public class ModItems {
                         () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
 
         @SubscribeEvent
-        public static void onItemRegister(RegistryEvent.Register<Item> event) {
+        public static void onItemRegister(RegisterEvent event) {
                 ModCreativeTab.initCreativeTabs();
         }
 }
