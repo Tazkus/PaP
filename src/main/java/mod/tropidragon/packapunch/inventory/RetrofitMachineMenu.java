@@ -1,7 +1,5 @@
 package mod.tropidragon.packapunch.inventory;
 
-import org.lwjgl.system.CallbackI.I;
-
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.item.ModernKineticGunItem;
 import com.tacz.guns.network.message.ServerMessageCraft;
