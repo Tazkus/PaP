@@ -22,7 +22,7 @@ public class ModCreativeTab {
             Divinium.MODID);
 
     public static RegistryObject<CreativeModeTab> PAP_TAB = TABS.register("other", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.tab.tacz.other"))
+            .title(Component.translatable("itemGroup.tab.packapunch.other"))
             .icon(() -> ModItems.RETROFIT_MACHINE.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(ModItems.RETROFIT_MACHINE.get());

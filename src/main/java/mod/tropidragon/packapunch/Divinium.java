@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import mod.tropidragon.packapunch.config.CommonConfig;
 import mod.tropidragon.packapunch.init.ModBlocks;
 import mod.tropidragon.packapunch.init.ModContainer;
+import mod.tropidragon.packapunch.init.ModCreativeTab;
 import mod.tropidragon.packapunch.init.ModEffects;
 import mod.tropidragon.packapunch.init.ModItems;
 import net.minecraft.world.level.block.Block;
@@ -51,6 +52,7 @@ public class Divinium {
         ModBlocks.BLOCK_ENTITIES.register(bus);
         ModItems.ITEMS.register(bus);
         ModContainer.CONTAINERS.register(bus);
+        ModCreativeTab.TABS.register(bus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.init());
     }
