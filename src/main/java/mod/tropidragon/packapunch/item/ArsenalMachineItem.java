@@ -17,8 +17,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 public class ArsenalMachineItem extends BlockItem {
     public ArsenalMachineItem() {
         super(ModBlocks.ARSENAL_MACHINE.get(),
-                (new Item.Properties()).stacksTo(64)
-                        .tab(ModCreativeTabs.getModTabs(new ResourceLocation(GunMod.MOD_ID, "other"))));
+                (new Item.Properties()).stacksTo(64));
 
     }
 

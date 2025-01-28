@@ -18,8 +18,7 @@ public class RetrofitMachineItem extends BlockItem {
     public RetrofitMachineItem() {
 
         super(ModBlocks.RETROFIT_MACHINE.get(),
-                (new Item.Properties()).stacksTo(64)
-                        .tab(ModCreativeTabs.getModTabs(new ResourceLocation(GunMod.MOD_ID, "other"))));
+                (new Item.Properties()).stacksTo(64));
 
     }
 

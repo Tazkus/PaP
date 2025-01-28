@@ -14,6 +14,26 @@ import net.minecraft.world.item.ItemStack;
 
 @SuppressWarnings("all")
 public class ModCreativeTab {
+    private static Map<ResourceLocation, CreativeModeTab> TABS = Maps.newHashMap();
+
+    public static void initCreativeTabs() {
+        addCreativeTabs("other", Component.translatable("itemGroup.tab.packapunch.other"),
+                () -> ModItems.RETROFIT_MACHINE.get().getDefaultInstance(), output -> {
+                    output.add(ModItems.RETROFIT_MACHINE.get().getDefaultInstance());
+                    output.add(ModItems.ARSENAL_MACHINE.get().getDefaultInstance());
+                    output.add(ModItems.ARTIFICIAL_115.get().getDefaultInstance());
+                    output.add(ModItems.ELEMENT_115.get().getDefaultInstance());
+                    output.add(ModItems.COLA_DEADSHOT.get().getDefaultInstance());
+                    output.add(ModItems.COLA_PHD.get().getDefaultInstance());
+                });
+    }
+
+    private static void addCreativeTabs(String label, Component displayName,
+            Supplier<ItemStack> iconStack, Consumer<NonNullList<ItemStack>> tabConsumer) {
+        DiviniumTab tab = new DiviniumTab(label, displayName, iconStack, tabConsumer);
+        TABS.put(new ResourceLocation(Divinium.MODID, label), tab);
+    }
+
     private static class DiviniumTab extends CreativeModeTab {
         private Component displayName;
         private Supplier<ItemStack> iconStack;
@@ -41,25 +61,5 @@ public class ModCreativeTab {
         public void fillItemList(NonNullList<ItemStack> items) {
             tabConsumer.accept(items);
         }
-    }
-
-    private static Map<ResourceLocation, CreativeModeTab> TABS = Maps.newHashMap();
-
-    private static void addCreativeTabs(String label, Component displayName,
-            Supplier<ItemStack> iconStack, Consumer<NonNullList<ItemStack>> tabConsumer) {
-        DiviniumTab tab = new DiviniumTab(label, displayName, iconStack, tabConsumer);
-        TABS.put(new ResourceLocation(Divinium.MODID, label), tab);
-    }
-
-    public static void initCreativeTabs() {
-        addCreativeTabs("other", Component.translatable("itemGroup.tab.packapunch.other"),
-                () -> ModItems.RETROFIT_MACHINE.get().getDefaultInstance(), output -> {
-                    output.add(ModItems.RETROFIT_MACHINE.get().getDefaultInstance());
-                    output.add(ModItems.ARSENAL_MACHINE.get().getDefaultInstance());
-                    output.add(ModItems.ARTIFICIAL_115.get().getDefaultInstance());
-                    output.add(ModItems.ELEMENT_115.get().getDefaultInstance());
-                    output.add(ModItems.COLA_DEADSHOT.get().getDefaultInstance());
-                    output.add(ModItems.COLA_PHD.get().getDefaultInstance());
-                });
     }
 }
