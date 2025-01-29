@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "packapunch:arsenal_machine",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
+          "name": "packapunch:arsenal_machine"
+        }
+      ],
+      "rolls": 1
+    }
+  ]
+}
