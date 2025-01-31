@@ -40,11 +40,8 @@ public class VaultCompat {
         }
     }
 
-    private static final int SOUL_SHARD_INFLATE = 100;
-
     public static boolean consumePlayerSoulShard(IItemHandler handler, int needCount) {
         int count = 0;
-        needCount *= SOUL_SHARD_INFLATE;
         // Curio
 
         // Player Inventory
