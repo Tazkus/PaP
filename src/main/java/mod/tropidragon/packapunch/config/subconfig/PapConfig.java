@@ -1,5 +1,10 @@
 package mod.tropidragon.packapunch.config.subconfig;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class PapConfig {
@@ -29,6 +34,13 @@ public final class PapConfig {
     public static ForgeConfigSpec.DoubleValue RARITY_B_RATE;
     public static ForgeConfigSpec.DoubleValue RARITY_A_RATE;
     public static ForgeConfigSpec.DoubleValue RARITY_S_RATE;
+
+    //
+    public static final int EXTENDED_LEVEL_DEFAULT_LEN = 10;
+    public static ForgeConfigSpec.BooleanValue USE_EXTENDED_LEVEL;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> EXTENDED_LEVEL_ITEM;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Integer>> EXTENDED_LEVEL_COST;
+    public static ForgeConfigSpec.ConfigValue<List<? extends Double>> EXTENDED_LEVEL_RATE;
 
     public static void init(ForgeConfigSpec.Builder builder) {
         builder.push("pap");
@@ -84,6 +96,31 @@ public final class PapConfig {
         RARITY_A_RATE = builder.defineInRange("RarityRateA", 3.0, 0.0, 10.0);
         builder.comment("Damage multiplier for weapon of Rarity S");
         RARITY_S_RATE = builder.defineInRange("RarityRateS", 4.0, 0.0, 10.0);
+
+        builder.comment(
+                "Use following Extended Level settings instead of default ones");
+        USE_EXTENDED_LEVEL = builder.define("UseExtendedLevel", false);
+
+        builder.comment("Upgrade Material of extended PaP levels");
+        EXTENDED_LEVEL_ITEM = builder.defineList("ExtendedLevelItem",
+                Stream.generate(() -> "minecraft:diamond")
+                        .limit(EXTENDED_LEVEL_DEFAULT_LEN)
+                        .collect(Collectors.toList()),
+                entry -> true);
+
+        builder.comment("Upgrade Cost of extended PaP levels");
+        EXTENDED_LEVEL_COST = builder.defineList("ExtendedLevelCost",
+                Stream.generate(() -> 50)
+                        .limit(EXTENDED_LEVEL_DEFAULT_LEN)
+                        .collect(Collectors.toList()),
+                entry -> true);
+
+        builder.comment("Damage multiplier for weapon of different Level");
+        EXTENDED_LEVEL_RATE = builder.defineList("ExtendedLevelRate",
+                Stream.generate(() -> 1.0)
+                        .limit(EXTENDED_LEVEL_DEFAULT_LEN)
+                        .collect(Collectors.toList()),
+                entry -> true);
 
         builder.pop();
     }

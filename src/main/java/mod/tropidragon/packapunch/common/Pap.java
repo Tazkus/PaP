@@ -24,6 +24,9 @@ public class Pap {
     // static private float[] papModifiers = { 1.0f, 2.0f, 3.0f, 4.0f };
     // static private float[] papModifiers = { 1.0f, 2.0f, 4.0f, 8.0f };
 
+    public static Item DEFAULT_PAP_UPGRADE_ITEM = Items.DIAMOND;
+    public static Item DEFAULT_RARITY_UPGRADE_ITEM = Items.NETHERITE_SCRAP;
+
     public static boolean upgradable(int papLvl, int rarityLvl) {
         return papLvl >= 0 && papLvl < 3 && rarityLvl >= 0 && rarityLvl < 4;
     }
@@ -106,12 +109,14 @@ public class Pap {
         IGun iGun = IGun.getIGunOrNull(gun);
 
         if (iGun instanceof IMixinModernKineticGunItem) {
-            int gunRarityTier = ((IMixinModernKineticGunItem) (Object) iGun).getRarityLevel(gun);
-            int gunPaPTier = ((IMixinModernKineticGunItem) (Object) iGun).getPaPLevel(gun);
-            // gunRarityModifier = rarityModifiers[gunRarityTier];
-            // gunPaPModifier = papModifiers[gunPaPTier];
-            gunRarityModifier = getRarityDamageRate(gunRarityTier);
-            gunPaPModifier = getPapDamageRate(gunPaPTier);
+            int gunRarityLevel = ((IMixinModernKineticGunItem) (Object) iGun).getRarityLevel(gun);
+            int gunPaPLevel = ((IMixinModernKineticGunItem) (Object) iGun).getPaPLevel(gun);
+            // gunRarityModifier = rarityModifiers[gunRarityLevel];
+            // gunPaPModifier = papModifiers[gunPaPLevel];
+            gunRarityModifier = getRarityDamageRate(gunRarityLevel);
+            gunPaPModifier = PapConfig.USE_EXTENDED_LEVEL.get()
+                    ? getExtendedPapDamageRate(gunPaPLevel)
+                    : getPapDamageRate(gunPaPLevel);
         }
         // nerf it to additive 😂
         return PapConfig.USE_ADDITIVE_DAMAGE_MULTIPLIER.get() ? gunRarityModifier + gunPaPModifier - 1f
@@ -119,6 +124,9 @@ public class Pap {
     }
 
     public static int getPapUpgradeCost(int papLevel) {
+        if (PapConfig.USE_EXTENDED_LEVEL.get()) {
+            return getExtendedPapUpgradeCost(papLevel);
+        }
         switch (papLevel) {
             case 0:
                 return PapConfig.PAP_COST_1.get();
@@ -147,20 +155,21 @@ public class Pap {
     }
 
     public static ItemStack getPapUpgradeItem(int papLevel) {
+        if (PapConfig.USE_EXTENDED_LEVEL.get()) {
+            return getExtendedPapUpgradeItem(papLevel);
+        }
         if (VaultCompat.INSTALLED) {
             return VaultCompat.getPapUpgradeItem(papLevel);
         }
         switch (papLevel) {
             case 0:
-                return getConfigItem(PapConfig.PAP_ITEM_1.get(), Items.DIAMOND)[0];
+                return getConfigItem(PapConfig.PAP_ITEM_1.get(), DEFAULT_PAP_UPGRADE_ITEM)[0];
             case 1:
-                return getConfigItem(PapConfig.PAP_ITEM_2.get(), Items.DIAMOND)[0];
+                return getConfigItem(PapConfig.PAP_ITEM_2.get(), DEFAULT_PAP_UPGRADE_ITEM)[0];
             case 2:
-                return getConfigItem(PapConfig.PAP_ITEM_3.get(), Items.DIAMOND)[0];
+                return getConfigItem(PapConfig.PAP_ITEM_3.get(), DEFAULT_PAP_UPGRADE_ITEM)[0];
             default:
-                Ingredient ingredient = Ingredient.of(Items.DIAMOND, Items.GOLDEN_APPLE);
-                ItemStack[] items = ingredient.getItems();
-                return items[0];
+                return getItemStack(DEFAULT_PAP_UPGRADE_ITEM);
         }
     }
 
@@ -170,17 +179,40 @@ public class Pap {
         }
         switch (rarityLvl) {
             case 0:
-                return getConfigItem(PapConfig.RARITY_ITEM_C.get(), Items.NETHERITE_SCRAP)[0];
+                return getConfigItem(PapConfig.RARITY_ITEM_C.get(), DEFAULT_RARITY_UPGRADE_ITEM)[0];
             case 1:
-                return getConfigItem(PapConfig.RARITY_ITEM_B.get(), Items.NETHERITE_SCRAP)[0];
+                return getConfigItem(PapConfig.RARITY_ITEM_B.get(), DEFAULT_RARITY_UPGRADE_ITEM)[0];
             case 2:
-                return getConfigItem(PapConfig.RARITY_ITEM_A.get(), Items.NETHERITE_SCRAP)[0];
+                return getConfigItem(PapConfig.RARITY_ITEM_A.get(), DEFAULT_RARITY_UPGRADE_ITEM)[0];
             case 3:
-                return getConfigItem(PapConfig.RARITY_ITEM_S.get(), Items.NETHERITE_SCRAP)[0];
+                return getConfigItem(PapConfig.RARITY_ITEM_S.get(), DEFAULT_RARITY_UPGRADE_ITEM)[0];
             default:
-                Ingredient ingredient = Ingredient.of(Items.NETHERITE_SCRAP, Items.GOLDEN_APPLE);
-                ItemStack[] items = ingredient.getItems();
-                return items[0];
+                return getItemStack(DEFAULT_RARITY_UPGRADE_ITEM);
+        }
+    }
+
+    public static float getExtendedPapDamageRate(int level) {
+        try {
+            return (PapConfig.EXTENDED_LEVEL_RATE.get()).get(level - 1).floatValue();
+        } catch (IndexOutOfBoundsException e) {
+            return 1.0F;
+        }
+    }
+
+    public static ItemStack getExtendedPapUpgradeItem(int level) {
+        try {
+            String itemName = (PapConfig.EXTENDED_LEVEL_ITEM.get()).get(level - 1);
+            return getConfigItem(itemName, DEFAULT_PAP_UPGRADE_ITEM)[0];
+        } catch (IndexOutOfBoundsException e) {
+            return getItemStack(DEFAULT_PAP_UPGRADE_ITEM);
+        }
+    }
+
+    public static int getExtendedPapUpgradeCost(int level) {
+        try {
+            return (PapConfig.EXTENDED_LEVEL_COST.get()).get(level - 1);
+        } catch (IndexOutOfBoundsException e) {
+            return 114514;
         }
     }
 
@@ -190,6 +222,12 @@ public class Pap {
             return Ingredient.of(ForgeRegistries.ITEMS.getValue(key)).getItems();
         }
         return Ingredient.of(defaultItem).getItems();
+    }
+
+    private static ItemStack getItemStack(Item item) {
+        Ingredient ingredient = Ingredient.of(item);
+        ItemStack[] items = ingredient.getItems();
+        return items[0];
     }
 
 }

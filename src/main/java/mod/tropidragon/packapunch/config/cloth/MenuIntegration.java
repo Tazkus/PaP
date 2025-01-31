@@ -2,6 +2,7 @@ package mod.tropidragon.packapunch.config.cloth;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Preconditions;
@@ -250,5 +251,27 @@ public class MenuIntegration {
                                 .setMin(0.0).setMax(10.0).setDefaultValue(4.0)
                                 .setSaveConsumer(i -> PapConfig.RARITY_S_RATE.set(i)).build());
 
+                // USE EXTENDED
+                pap.addEntry(entryBuilder
+                                .startBooleanToggle(
+                                                new TranslatableComponent("config.packapunch.pap.use_extended_level"),
+                                                PapConfig.USE_EXTENDED_LEVEL.get())
+                                .setDefaultValue(false)
+                                .setSaveConsumer(i -> PapConfig.USE_EXTENDED_LEVEL.set(i)).build());
+                pap.addEntry(entryBuilder
+                                .startStrList(new TranslatableComponent("config.packapunch.pap.extended_level_item"),
+                                                (List<String>) PapConfig.EXTENDED_LEVEL_ITEM.get())
+                                .setSaveConsumer(i -> PapConfig.EXTENDED_LEVEL_ITEM.set(i)).build());
+                pap.addEntry(entryBuilder
+                                .startIntList(new TranslatableComponent("config.packapunch.pap.extended_level_cost"),
+                                                (List<Integer>) PapConfig.EXTENDED_LEVEL_COST.get())
+                                .setMin(0).setMax(65536)
+                                .setSaveConsumer(i -> PapConfig.EXTENDED_LEVEL_COST.set(i)).build());
+
+                pap.addEntry(entryBuilder
+                                .startDoubleList(new TranslatableComponent("config.packapunch.pap.extended_level_rate"),
+                                                (List<Double>) PapConfig.EXTENDED_LEVEL_RATE.get())
+                                .setMin(0.0).setMax(10.0)
+                                .setSaveConsumer(i -> PapConfig.EXTENDED_LEVEL_RATE.set(i)).build());
         }
 }
